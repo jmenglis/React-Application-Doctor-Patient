@@ -1,12 +1,15 @@
 import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
+import DocumentTitle from 'react-document-title'
 
-export default class Home extends Component {
+export default class Patient extends Component {
   render() {
     return (
-      <div>
-        <h1>Hello Patient!</h1>
-      </div>
+      <DocumentTitle title="Tempus - Patient">
+        <div>
+          <h1>Hello Patient!</h1>
+        </div>
+      </DocumentTitle>
     )
   }
 }
