@@ -15,7 +15,9 @@
     "morgan": "~1.7.0",
     "node-sass-middleware": "0.8.0",
     "react": "^15.2.0",
+    "react-document-title": "^2.0.2",
     "react-dom": "^15.2.0",
+    "react-router": "^2.5.2",
     "serve-favicon": "~2.3.0"
   },
   "devDependencies": {
