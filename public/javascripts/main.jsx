@@ -26602,18 +26602,95 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var App = function (_Component) {
-	  _inherits(App, _Component);
+	var LoggedIn = function (_Component) {
+	  _inherits(LoggedIn, _Component);
 
-	  function App() {
+	  function LoggedIn() {
+	    _classCallCheck(this, LoggedIn);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(LoggedIn).apply(this, arguments));
+	  }
+
+	  _createClass(LoggedIn, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'li',
+	        null,
+	        _react2.default.createElement(
+	          _NavLink2.default,
+	          { to: '/Login' },
+	          'Login'
+	        )
+	      );
+	    }
+	  }]);
+
+	  return LoggedIn;
+	}(_react.Component);
+
+	var LoggedOut = function (_Component2) {
+	  _inherits(LoggedOut, _Component2);
+
+	  function LoggedOut() {
+	    _classCallCheck(this, LoggedOut);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(LoggedOut).apply(this, arguments));
+	  }
+
+	  _createClass(LoggedOut, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'li',
+	        null,
+	        _react2.default.createElement(
+	          _NavLink2.default,
+	          { to: '/Logout' },
+	          'Logout'
+	        )
+	      );
+	    }
+	  }]);
+
+	  return LoggedOut;
+	}(_react.Component);
+
+	var App = function (_Component3) {
+	  _inherits(App, _Component3);
+
+	  function App(props) {
 	    _classCallCheck(this, App);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(App).apply(this, arguments));
+	    var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(App).call(this, props));
+
+	    _this3.state = {
+	      logoutButton: false
+	    };
+	    return _this3;
 	  }
 
 	  _createClass(App, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this4 = this;
+
+	      $.ajax({
+	        type: "GET",
+	        url: "/authorized",
+	        success: function success(userData) {
+	          if (userData.loggedIn) {
+	            _this4.setState({ logoutButton: true });
+	          } else {
+	            _this4.setState({ logoutButton: false });
+	          }
+	        }
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var loggedButton = this.state.logoutButton ? _react2.default.createElement(LoggedOut, null) : _react2.default.createElement(LoggedIn, null);
 	      return _react2.default.createElement(
 	        _reactDocumentTitle2.default,
 	        { title: 'Tempus - Home' },
@@ -26637,15 +26714,7 @@
 	                _react2.default.createElement(
 	                  'ul',
 	                  { id: 'nav-mobile', className: 'right hide-on-med-and-down' },
-	                  _react2.default.createElement(
-	                    'li',
-	                    null,
-	                    _react2.default.createElement(
-	                      _NavLink2.default,
-	                      { to: '/Login' },
-	                      'Login'
-	                    )
-	                  )
+	                  loggedButton
 	                )
 	              )
 	            )
@@ -27132,14 +27201,13 @@
 	        type: "GET",
 	        url: "/authorized",
 	        success: function success(userData) {
-	          if (userData) {
+	          if (userData.loggedIn) {
 	            if (userData.type === "Doctor") {
 	              _reactRouter.browserHistory.push('/doctor');
 	            } else {
 	              _reactRouter.browserHistory.push('/patient');
 	            }
 	          }
-	          console.log("Good to Go");
 	        }
 	      });
 	    }

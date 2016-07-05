@@ -4,10 +4,10 @@ import path from 'path'
 import favicon from 'serve-favicon'
 import logger from 'morgan'
 import bodyParser from 'body-parser'
+import cookieSession from 'cookie-session'
 import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { match, RouterContext } from 'react-router'
-import session from 'express-session'
 import routes from './source/imports/routes.jsx'
 
 
@@ -23,6 +23,11 @@ app.set('view engine', 'html')
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
+app.use(cookieSession({
+  name: "Tempted",
+  keys: ['key12345678'],
+  maxAge: 180000
+}))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(require('node-sass-middleware')({
@@ -34,12 +39,18 @@ app.use(express.static(path.join(__dirname, 'public'), {index: false}))
 
 app.post('/login', (req, res) => {
   if (req.body.username === "Testing" && req.body.password === "1234") {
+    req.session.username = req.body.username
+    req.session.loggedIn = true
+    req.session.type = "Doctor"
     res.json({
       failedLogin:false,
       username: "Testing",
       type: "Doctor"
     })
   } else if (req.body.username === "Testing2" && req.body.password === "1234") {
+    req.session.username = req.body.username
+    req.session.loggedIn = true
+    req.session.type = "Patient"
     res.json({
       failedLogin:false,
       username: "Testing2",
@@ -51,7 +62,12 @@ app.post('/login', (req, res) => {
 })
 
 app.get('/authorized', (req, res) => {
-
+  if (req.session.loggedIn === true) {
+     res.json({
+       loggedIn: true,
+       type: req.session.type
+     })
+  }
 })
 
 app.get('*', (req, res) => {
@@ -61,6 +77,7 @@ app.get('*', (req, res) => {
     } else if (redirect) {
       res.redirect(redirect.pathname + redirect.search)
     } else if (props) {
+      console.log(req.session)
       const appHtml = renderToString(<RouterContext {...props}/>)
       res.send(renderPage(appHtml))
     } else {

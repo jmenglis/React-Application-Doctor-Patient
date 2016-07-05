@@ -4,8 +4,44 @@ import { Link } from 'react-router'
 import DocumentTitle from 'react-document-title'
 import NavLink from './NavLink.jsx'
 
+class LoggedIn extends Component {
+  render () {
+    return (
+      <li><NavLink to="/Login">Login</NavLink></li>
+    )
+  }
+}
+class LoggedOut extends Component {
+  render () {
+    return (
+      <li><NavLink to="/Logout">Logout</NavLink></li>
+    )
+  }
+}
+
+
 export default class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      logoutButton: false
+    }
+  }
+  componentDidMount() {
+    $.ajax({
+      type: "GET",
+      url: "/authorized",
+      success: (userData) => {
+        if (userData.loggedIn) {
+          this.setState({logoutButton: true})
+        } else {
+          this.setState({logoutButton: false})
+        }
+      }
+    })
+  }
   render() {
+    var loggedButton = this.state.logoutButton ? <LoggedOut /> : <LoggedIn />
     return (
       <DocumentTitle title="Tempus - Home">
         <div>
@@ -14,7 +50,7 @@ export default class App extends Component {
               <div className="nav-wrapper">
                 <Link to="/" className="brand-logo">Tempus</Link>
                 <ul id="nav-mobile" className="right hide-on-med-and-down">
-                  <li><NavLink to="/Login">Login</NavLink></li>
+                  {loggedButton}
                 </ul>
               </div>
             </nav>

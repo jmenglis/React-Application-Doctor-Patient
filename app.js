@@ -62,13 +62,13 @@
 
 	var _morgan2 = _interopRequireDefault(_morgan);
 
-	var _cookieParser = __webpack_require__(5);
-
-	var _cookieParser2 = _interopRequireDefault(_cookieParser);
-
-	var _bodyParser = __webpack_require__(6);
+	var _bodyParser = __webpack_require__(5);
 
 	var _bodyParser2 = _interopRequireDefault(_bodyParser);
+
+	var _cookieSession = __webpack_require__(6);
+
+	var _cookieSession2 = _interopRequireDefault(_cookieSession);
 
 	var _react = __webpack_require__(7);
 
@@ -99,9 +99,13 @@
 	// uncomment after placing your favicon in /public
 	//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 	app.use((0, _morgan2.default)('dev'));
+	app.use((0, _cookieSession2.default)({
+	  name: "Tempted",
+	  keys: ['key12345678'],
+	  maxAge: 180000
+	}));
 	app.use(_bodyParser2.default.json());
 	app.use(_bodyParser2.default.urlencoded({ extended: false }));
-	app.use((0, _cookieParser2.default)());
 	app.use(__webpack_require__(21)({
 	  src: _path2.default.join(__dirname, 'public'),
 	  dest: _path2.default.join(__dirname, 'public'),
@@ -111,12 +115,18 @@
 
 	app.post('/login', function (req, res) {
 	  if (req.body.username === "Testing" && req.body.password === "1234") {
+	    req.session.username = req.body.username;
+	    req.session.loggedIn = true;
+	    req.session.type = "Doctor";
 	    res.json({
 	      failedLogin: false,
 	      username: "Testing",
 	      type: "Doctor"
 	    });
 	  } else if (req.body.username === "Testing2" && req.body.password === "1234") {
+	    req.session.username = req.body.username;
+	    req.session.loggedIn = true;
+	    req.session.type = "Patient";
 	    res.json({
 	      failedLogin: false,
 	      username: "Testing2",
@@ -128,7 +138,12 @@
 	});
 
 	app.get('/authorized', function (req, res) {
-	  console.log("Received Hit");
+	  if (req.session.loggedIn === true) {
+	    res.json({
+	      loggedIn: true,
+	      type: req.session.type
+	    });
+	  }
 	});
 
 	app.get('*', function (req, res) {
@@ -138,6 +153,7 @@
 	    } else if (redirect) {
 	      res.redirect(redirect.pathname + redirect.search);
 	    } else if (props) {
+	      console.log(req.session);
 	      var appHtml = (0, _server.renderToString)(_react2.default.createElement(_reactRouter.RouterContext, props));
 	      res.send(renderPage(appHtml));
 	    } else {
@@ -216,13 +232,13 @@
 /* 5 */
 /***/ function(module, exports) {
 
-	module.exports = require("cookie-parser");
+	module.exports = require("body-parser");
 
 /***/ },
 /* 6 */
 /***/ function(module, exports) {
 
-	module.exports = require("body-parser");
+	module.exports = require("cookie-session");
 
 /***/ },
 /* 7 */
@@ -313,18 +329,95 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var App = function (_Component) {
-	  _inherits(App, _Component);
+	var LoggedIn = function (_Component) {
+	  _inherits(LoggedIn, _Component);
 
-	  function App() {
+	  function LoggedIn() {
+	    _classCallCheck(this, LoggedIn);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(LoggedIn).apply(this, arguments));
+	  }
+
+	  _createClass(LoggedIn, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'li',
+	        null,
+	        _react2.default.createElement(
+	          _NavLink2.default,
+	          { to: '/Login' },
+	          'Login'
+	        )
+	      );
+	    }
+	  }]);
+
+	  return LoggedIn;
+	}(_react.Component);
+
+	var LoggedOut = function (_Component2) {
+	  _inherits(LoggedOut, _Component2);
+
+	  function LoggedOut() {
+	    _classCallCheck(this, LoggedOut);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(LoggedOut).apply(this, arguments));
+	  }
+
+	  _createClass(LoggedOut, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'li',
+	        null,
+	        _react2.default.createElement(
+	          _NavLink2.default,
+	          { to: '/Logout' },
+	          'Logout'
+	        )
+	      );
+	    }
+	  }]);
+
+	  return LoggedOut;
+	}(_react.Component);
+
+	var App = function (_Component3) {
+	  _inherits(App, _Component3);
+
+	  function App(props) {
 	    _classCallCheck(this, App);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(App).apply(this, arguments));
+	    var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(App).call(this, props));
+
+	    _this3.state = {
+	      logoutButton: false
+	    };
+	    return _this3;
 	  }
 
 	  _createClass(App, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this4 = this;
+
+	      $.ajax({
+	        type: "GET",
+	        url: "/authorized",
+	        success: function success(userData) {
+	          if (userData.loggedIn) {
+	            _this4.setState({ logoutButton: true });
+	          } else {
+	            _this4.setState({ logoutButton: false });
+	          }
+	        }
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var loggedButton = this.state.logoutButton ? _react2.default.createElement(LoggedOut, null) : _react2.default.createElement(LoggedIn, null);
 	      return _react2.default.createElement(
 	        _reactDocumentTitle2.default,
 	        { title: 'Tempus - Home' },
@@ -348,15 +441,7 @@
 	                _react2.default.createElement(
 	                  'ul',
 	                  { id: 'nav-mobile', className: 'right hide-on-med-and-down' },
-	                  _react2.default.createElement(
-	                    'li',
-	                    null,
-	                    _react2.default.createElement(
-	                      _NavLink2.default,
-	                      { to: '/Login' },
-	                      'Login'
-	                    )
-	                  )
+	                  loggedButton
 	                )
 	              )
 	            )
@@ -585,14 +670,13 @@
 	        type: "GET",
 	        url: "/authorized",
 	        success: function success(userData) {
-	          if (userData) {
+	          if (userData.loggedIn) {
 	            if (userData.type === "Doctor") {
 	              _reactRouter.browserHistory.push('/doctor');
 	            } else {
 	              _reactRouter.browserHistory.push('/patient');
 	            }
 	          }
-	          console.log("Good to Go");
 	        }
 	      });
 	    }

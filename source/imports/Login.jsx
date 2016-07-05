@@ -23,14 +23,13 @@ export default class Login extends Component {
       type: "GET",
       url: "/authorized",
       success: (userData) => {
-        if (userData) {
+        if (userData.loggedIn) {
           if (userData.type === "Doctor") {
             browserHistory.push('/doctor')
           } else {
             browserHistory.push('/patient')
           }
         }
-        console.log("Good to Go");
       }
     })
   }
