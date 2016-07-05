@@ -26537,10 +26537,6 @@
 
 	'use strict';
 
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -26561,7 +26557,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	exports.default = _react2.default.createElement(
+	module.exports = _react2.default.createElement(
 	  _reactRouter.Route,
 	  { path: '/', component: _App2.default },
 	  _react2.default.createElement(_reactRouter.IndexRoute, { component: _Home2.default }),
@@ -26673,12 +26669,7 @@
 	              _react2.default.createElement(
 	                'div',
 	                { className: 'container' },
-	                '© 2014 Copyright Text',
-	                _react2.default.createElement(
-	                  'a',
-	                  { className: 'grey-text text-lighten-4 right', href: '#!' },
-	                  'More Links'
-	                )
+	                '© 2016 Josh English'
 	              )
 	            )
 	          )

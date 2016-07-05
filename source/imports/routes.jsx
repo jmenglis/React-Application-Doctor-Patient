@@ -4,7 +4,7 @@ import App from './App.jsx'
 import Home from './Home.jsx'
 import Login from './Login.jsx'
 
-export default (
+module.exports = (
   <Route path="/" component={App}>
     <IndexRoute component={Home} />
     <Route path="/Login" component={Login} />
