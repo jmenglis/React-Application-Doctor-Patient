@@ -18,27 +18,43 @@ export default class Login extends Component {
       failedLogin: false
     }
   }
+  componentDidMount() {
+    $.ajax({
+      type: "GET",
+      url: "/authorized",
+      success: (userData) => {
+        if (userData) {
+          if (userData.type === "Doctor") {
+            browserHistory.push('/doctor')
+          } else {
+            browserHistory.push('/patient')
+          }
+        }
+        console.log("Good to Go");
+      }
+    })
+  }
   handleSubmit(e) {
     this.setState({ failedLogin: false });
     e.preventDefault();
-    let username = ReactDOM.findDOMNode(this.refs.usernameInput).value.trim()
-    let password = ReactDOM.findDOMNode(this.refs.passwordInput).value.trim()
-    var data = {
-      username: username,
-      password: password
-
+    let data = {
+      username: ReactDOM.findDOMNode(this.refs.usernameInput).value.trim(),
+      password: ReactDOM.findDOMNode(this.refs.passwordInput).value.trim()
     }
     $.ajax({
       type: "POST",
       url: "/login",
       data: data,
-      success: (myData) => {
-        if (myData.failedLogin) {
+      success: (userData) => {
+        if (userData.failedLogin) {
           this.setState({ failedLogin: true })
           console.log(this.state)
         } else {
-          console.log(myData)
-          browserHistory.push('/')
+          if (userData.type === "Doctor") {
+            browserHistory.push('/doctor')
+          } else {
+            browserHistory.push('/patient')
+          }
         }
       }
     })
@@ -46,12 +62,7 @@ export default class Login extends Component {
     ReactDOM.findDOMNode(this.refs.passwordInput).value = ''
   }
   render() {
-    var failureMessage
-    if (this.state.failedLogin) {
-      failureMessage = <Message />
-    } else {
-      failureMessage = '';
-    }
+    var failureMessage = this.state.failedLogin ? <Message /> : ''
     return (
       <DocumentTitle title="Tempus - Login">
         <div className="row">

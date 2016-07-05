@@ -27126,30 +27126,48 @@
 	  }
 
 	  _createClass(Login, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      $.ajax({
+	        type: "GET",
+	        url: "/authorized",
+	        success: function success(userData) {
+	          if (userData) {
+	            if (userData.type === "Doctor") {
+	              _reactRouter.browserHistory.push('/doctor');
+	            } else {
+	              _reactRouter.browserHistory.push('/patient');
+	            }
+	          }
+	          console.log("Good to Go");
+	        }
+	      });
+	    }
+	  }, {
 	    key: 'handleSubmit',
 	    value: function handleSubmit(e) {
 	      var _this3 = this;
 
 	      this.setState({ failedLogin: false });
 	      e.preventDefault();
-	      var username = _reactDom2.default.findDOMNode(this.refs.usernameInput).value.trim();
-	      var password = _reactDom2.default.findDOMNode(this.refs.passwordInput).value.trim();
 	      var data = {
-	        username: username,
-	        password: password
-
+	        username: _reactDom2.default.findDOMNode(this.refs.usernameInput).value.trim(),
+	        password: _reactDom2.default.findDOMNode(this.refs.passwordInput).value.trim()
 	      };
 	      $.ajax({
 	        type: "POST",
 	        url: "/login",
 	        data: data,
-	        success: function success(myData) {
-	          if (myData.failedLogin) {
+	        success: function success(userData) {
+	          if (userData.failedLogin) {
 	            _this3.setState({ failedLogin: true });
 	            console.log(_this3.state);
 	          } else {
-	            console.log(myData);
-	            _this3.props.history.push('/');
+	            if (userData.type === "Doctor") {
+	              _reactRouter.browserHistory.push('/doctor');
+	            } else {
+	              _reactRouter.browserHistory.push('/patient');
+	            }
 	          }
 	        }
 	      });
@@ -27159,12 +27177,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var failureMessage;
-	      if (this.state.failedLogin) {
-	        failureMessage = _react2.default.createElement(Message, null);
-	      } else {
-	        failureMessage = '';
-	      }
+	      var failureMessage = this.state.failedLogin ? _react2.default.createElement(Message, null) : '';
 	      return _react2.default.createElement(
 	        _reactDocumentTitle2.default,
 	        { title: 'Tempus - Login' },

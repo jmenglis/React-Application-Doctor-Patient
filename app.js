@@ -116,9 +116,19 @@
 	      username: "Testing",
 	      type: "Doctor"
 	    });
+	  } else if (req.body.username === "Testing2" && req.body.password === "1234") {
+	    res.json({
+	      failedLogin: false,
+	      username: "Testing2",
+	      type: "Patient"
+	    });
 	  } else {
 	    res.json({ failedLogin: true });
 	  }
+	});
+
+	app.get('/authorized', function (req, res) {
+	  console.log("Received Hit");
 	});
 
 	app.get('*', function (req, res) {
@@ -137,39 +147,39 @@
 	});
 
 	function renderPage(appHtml) {
-	  return '\n    <!doctype html public="storage">\n    <html>\n    <meta charset=utf-8/>\n    <title>Tempus - Home</title>\n    <link rel="stylesheet" href="/stylesheets/style.css" />\n    <div id=react-render>' + appHtml + '</div>\n  <script src="/javascripts/main.jsx"></script>\n  <script src="/javascripts/jquery-3.0.0.js"></script>\n  <script src="/javascripts/materialize.js"></script>\n   ';
+	  return '\n    <!doctype html public="storage">\n    <html>\n    <meta charset=utf-8/>\n    <title>Tempus - Home</title>\n    <link rel="stylesheet" href="/stylesheets/style.css" />\n    <div id=react-render>' + appHtml + '</div>\n    <script src="/javascripts/jquery-3.0.0.js"></script>\n    <script src="/javascripts/materialize.js"></script>\n    <script src="/javascripts/main.jsx"></script>\n   ';
 	}
 
 	// catch 404 and forward to error handler
-	app.use(function (req, res, next) {
-	  var err = new Error('Not Found');
-	  err.status = 404;
-	  next(err);
-	});
+	// app.use(function(req, res, next) {
+	//   var err = new Error('Not Found');
+	//   err.status = 404;
+	//   next(err);
+	// });
 
 	// error handlers
 
 	// development error handler
 	// will print stacktrace
-	if (app.get('env') === 'development') {
-	  app.use(function (err, req, res, next) {
-	    res.status(err.status || 500);
-	    res.render('error', {
-	      message: err.message,
-	      error: err
-	    });
-	  });
-	}
+	// if (app.get('env') === 'development') {
+	//   app.use(function(err, req, res, next) {
+	//     res.status(err.status || 500);
+	//     res.render('error', {
+	//       message: err.message,
+	//       error: err
+	//     });
+	//   });
+	// }
 
-	// production error handler
-	// no stacktraces leaked to user
-	app.use(function (err, req, res, next) {
-	  res.status(err.status || 500);
-	  res.render('error', {
-	    message: err.message,
-	    error: {}
-	  });
-	});
+	// // production error handler
+	// // no stacktraces leaked to user
+	// app.use(function(err, req, res, next) {
+	//   res.status(err.status || 500);
+	//   res.render('error', {
+	//     message: err.message,
+	//     error: {}
+	//   });
+	// });
 
 	var PORT = process.env.PORT || 3000;
 	app.listen(PORT, function () {
@@ -569,30 +579,48 @@
 	  }
 
 	  _createClass(Login, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      $.ajax({
+	        type: "GET",
+	        url: "/authorized",
+	        success: function success(userData) {
+	          if (userData) {
+	            if (userData.type === "Doctor") {
+	              _reactRouter.browserHistory.push('/doctor');
+	            } else {
+	              _reactRouter.browserHistory.push('/patient');
+	            }
+	          }
+	          console.log("Good to Go");
+	        }
+	      });
+	    }
+	  }, {
 	    key: 'handleSubmit',
 	    value: function handleSubmit(e) {
 	      var _this3 = this;
 
 	      this.setState({ failedLogin: false });
 	      e.preventDefault();
-	      var username = _reactDom2.default.findDOMNode(this.refs.usernameInput).value.trim();
-	      var password = _reactDom2.default.findDOMNode(this.refs.passwordInput).value.trim();
 	      var data = {
-	        username: username,
-	        password: password
-
+	        username: _reactDom2.default.findDOMNode(this.refs.usernameInput).value.trim(),
+	        password: _reactDom2.default.findDOMNode(this.refs.passwordInput).value.trim()
 	      };
 	      $.ajax({
 	        type: "POST",
 	        url: "/login",
 	        data: data,
-	        success: function success(myData) {
-	          if (myData.failedLogin) {
+	        success: function success(userData) {
+	          if (userData.failedLogin) {
 	            _this3.setState({ failedLogin: true });
 	            console.log(_this3.state);
 	          } else {
-	            console.log(myData);
-	            _this3.props.history.push('/');
+	            if (userData.type === "Doctor") {
+	              _reactRouter.browserHistory.push('/doctor');
+	            } else {
+	              _reactRouter.browserHistory.push('/patient');
+	            }
 	          }
 	        }
 	      });
@@ -602,12 +630,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var failureMessage;
-	      if (this.state.failedLogin) {
-	        failureMessage = _react2.default.createElement(Message, null);
-	      } else {
-	        failureMessage = '';
-	      }
+	      var failureMessage = this.state.failedLogin ? _react2.default.createElement(Message, null) : '';
 	      return _react2.default.createElement(
 	        _reactDocumentTitle2.default,
 	        { title: 'Tempus - Login' },
