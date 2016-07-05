@@ -27,11 +27,12 @@ app.use(require('node-sass-middleware')({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/patient/', patient);
+// app.use('/patient/', patient);
 
 app.get('*', function(req, res) {
   res.sendFile(path.join(__dirname, 'views', 'index.html'))
 })
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
