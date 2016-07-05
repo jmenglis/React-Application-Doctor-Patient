@@ -25,13 +25,14 @@ export default class App extends Component {
               {this.props.children || <Home/>}
             </div>
           </main>
-          <footer className="page-footer">
+          {/* <footer className="page-footer">
             <div className="footer-copyright">
               <div className="container">
               © 2016 Josh English
               </div>
             </div>
           </footer>
+          */}
         </div>
       </DocumentTitle>
     );

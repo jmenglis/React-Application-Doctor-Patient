@@ -295,19 +295,6 @@
 	              { className: 'container' },
 	              this.props.children || _react2.default.createElement(Home, null)
 	            )
-	          ),
-	          _react2.default.createElement(
-	            'footer',
-	            { className: 'page-footer' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'footer-copyright' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'container' },
-	                '© 2016 Josh English'
-	              )
-	            )
 	          )
 	        )
 	      );
