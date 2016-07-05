@@ -1,3 +1,4 @@
+require('dotenv').config();
 import express from 'express'
 import path from 'path'
 import favicon from 'serve-favicon'
@@ -31,7 +32,21 @@ app.use(require('node-sass-middleware')({
 }));
 app.use(express.static(path.join(__dirname, 'public'), {index: false}));
 
-// app.use('/patient/', patient);
+app.post('/login', (req, res) => {
+    match({ routes, location: req.url }, (err, redirect, props) => {
+    if (err) {
+      res.status(500).send(err.message)
+    } else if (redirect) {
+      res.redirect(redirect.pathname + redirect.search)
+    } else if (props) {
+
+      const appHtml = renderToString(<RouterContext {...props}/>)
+      res.send(renderPage(appHtml))
+    } else {
+      res.status(404).send('Not Found')
+    }
+  })
+})
 
 app.get('*', (req, res) => {
   match({ routes, location: req.url }, (err, redirect, props) => {

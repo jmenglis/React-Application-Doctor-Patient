@@ -27086,38 +27086,75 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Patient = function (_Component) {
-	  _inherits(Patient, _Component);
+	var Login = function (_Component) {
+	  _inherits(Login, _Component);
 
-	  function Patient() {
-	    _classCallCheck(this, Patient);
+	  function Login() {
+	    _classCallCheck(this, Login);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Patient).apply(this, arguments));
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Login).apply(this, arguments));
 	  }
 
-	  _createClass(Patient, [{
+	  _createClass(Login, [{
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
 	        _reactDocumentTitle2.default,
-	        { title: 'Tempus - Patient' },
+	        { title: 'Tempus - Login' },
 	        _react2.default.createElement(
 	          'div',
-	          null,
+	          { className: 'row' },
 	          _react2.default.createElement(
 	            'h1',
 	            null,
-	            'Hello Patient!'
+	            'Please Login'
+	          ),
+	          _react2.default.createElement(
+	            'form',
+	            { className: 'col s12', onSubmit: this.handleSubmit },
+	            _react2.default.createElement(
+	              'div',
+	              { 'class': 'row' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'input-field col s6' },
+	                _react2.default.createElement('input', { id: 'username', type: 'text', className: 'validate' }),
+	                _react2.default.createElement(
+	                  'label',
+	                  { 'for': 'username' },
+	                  'Username'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'input-field col s6' },
+	                _react2.default.createElement('input', { id: 'password', type: 'password', className: 'validate' }),
+	                _react2.default.createElement(
+	                  'label',
+	                  { 'for': 'password' },
+	                  'Username'
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'row' },
+	              _react2.default.createElement(
+	                'button',
+	                { className: 'btn waves-effect waves-light', type: 'submit', name: 'action' },
+	                'Submit'
+	              )
+	            )
 	          )
 	        )
 	      );
 	    }
 	  }]);
 
-	  return Patient;
+	  return Login;
 	}(_react.Component);
 
-	exports.default = Patient;
+	exports.default = Login;
 
 /***/ }
 /******/ ]);

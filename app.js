@@ -46,51 +46,84 @@
 
 	'use strict';
 
-	var _react = __webpack_require__(1);
+	var _express = __webpack_require__(1);
+
+	var _express2 = _interopRequireDefault(_express);
+
+	var _path = __webpack_require__(2);
+
+	var _path2 = _interopRequireDefault(_path);
+
+	var _serveFavicon = __webpack_require__(3);
+
+	var _serveFavicon2 = _interopRequireDefault(_serveFavicon);
+
+	var _morgan = __webpack_require__(4);
+
+	var _morgan2 = _interopRequireDefault(_morgan);
+
+	var _cookieParser = __webpack_require__(5);
+
+	var _cookieParser2 = _interopRequireDefault(_cookieParser);
+
+	var _bodyParser = __webpack_require__(6);
+
+	var _bodyParser2 = _interopRequireDefault(_bodyParser);
+
+	var _react = __webpack_require__(7);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _server = __webpack_require__(2);
+	var _server = __webpack_require__(8);
 
-	var _reactRouter = __webpack_require__(3);
+	var _reactRouter = __webpack_require__(9);
 
-	var _routes = __webpack_require__(4);
+	var _routes = __webpack_require__(10);
 
 	var _routes2 = _interopRequireDefault(_routes);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var express = __webpack_require__(11);
-	var path = __webpack_require__(12);
-	var favicon = __webpack_require__(13);
-	var logger = __webpack_require__(14);
-	var cookieParser = __webpack_require__(15);
-	var bodyParser = __webpack_require__(16);
+	__webpack_require__(17).config();
 
 
-	var patient = __webpack_require__(17);
+	__webpack_require__(18);
 
-	var app = express();
+	var app = (0, _express2.default)();
 
 	// view engine setup
-	app.engine('html', __webpack_require__(18).renderFile);
-	app.set('views', path.join(__dirname, 'views'));
+	app.engine('html', __webpack_require__(20).renderFile);
+	app.set('views', _path2.default.join(__dirname, 'views'));
 	app.set('view engine', 'html');
 
 	// uncomment after placing your favicon in /public
 	//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-	app.use(logger('dev'));
-	app.use(bodyParser.json());
-	app.use(bodyParser.urlencoded({ extended: false }));
-	app.use(cookieParser());
-	app.use(__webpack_require__(19)({
-	  src: path.join(__dirname, 'public'),
-	  dest: path.join(__dirname, 'public'),
+	app.use((0, _morgan2.default)('dev'));
+	app.use(_bodyParser2.default.json());
+	app.use(_bodyParser2.default.urlencoded({ extended: false }));
+	app.use((0, _cookieParser2.default)());
+	app.use(__webpack_require__(21)({
+	  src: _path2.default.join(__dirname, 'public'),
+	  dest: _path2.default.join(__dirname, 'public'),
 	  sourceMap: true
 	}));
-	app.use(express.static(path.join(__dirname, 'public'), { index: false }));
+	app.use(_express2.default.static(_path2.default.join(__dirname, 'public'), { index: false }));
 
-	// app.use('/patient/', patient);
+	app.post('/login', function (req, res) {
+	  (0, _reactRouter.match)({ routes: _routes2.default, location: req.url }, function (err, redirect, props) {
+	    if (err) {
+	      res.status(500).send(err.message);
+	    } else if (redirect) {
+	      res.redirect(redirect.pathname + redirect.search);
+	    } else if (props) {
+
+	      var appHtml = (0, _server.renderToString)(_react2.default.createElement(_reactRouter.RouterContext, props));
+	      res.send(renderPage(appHtml));
+	    } else {
+	      res.status(404).send('Not Found');
+	    }
+	  });
+	});
 
 	app.get('*', function (req, res) {
 	  (0, _reactRouter.match)({ routes: _routes2.default, location: req.url }, function (err, redirect, props) {
@@ -153,41 +186,77 @@
 /* 1 */
 /***/ function(module, exports) {
 
-	module.exports = require("react");
+	module.exports = require("express");
 
 /***/ },
 /* 2 */
 /***/ function(module, exports) {
 
-	module.exports = require("react-dom/server");
+	module.exports = require("path");
 
 /***/ },
 /* 3 */
 /***/ function(module, exports) {
 
-	module.exports = require("react-router");
+	module.exports = require("serve-favicon");
 
 /***/ },
 /* 4 */
+/***/ function(module, exports) {
+
+	module.exports = require("morgan");
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	module.exports = require("cookie-parser");
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	module.exports = require("body-parser");
+
+/***/ },
+/* 7 */
+/***/ function(module, exports) {
+
+	module.exports = require("react");
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	module.exports = require("react-dom/server");
+
+/***/ },
+/* 9 */
+/***/ function(module, exports) {
+
+	module.exports = require("react-router");
+
+/***/ },
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _react = __webpack_require__(1);
+	var _react = __webpack_require__(7);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRouter = __webpack_require__(3);
+	var _reactRouter = __webpack_require__(9);
 
-	var _App = __webpack_require__(5);
+	var _App = __webpack_require__(11);
 
 	var _App2 = _interopRequireDefault(_App);
 
-	var _Home = __webpack_require__(9);
+	var _Home = __webpack_require__(15);
 
 	var _Home2 = _interopRequireDefault(_Home);
 
-	var _Login = __webpack_require__(10);
+	var _Login = __webpack_require__(16);
 
 	var _Login2 = _interopRequireDefault(_Login);
 
@@ -201,7 +270,7 @@
 	);
 
 /***/ },
-/* 5 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -212,21 +281,21 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _react = __webpack_require__(1);
+	var _react = __webpack_require__(7);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(6);
+	var _reactDom = __webpack_require__(12);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _reactRouter = __webpack_require__(3);
+	var _reactRouter = __webpack_require__(9);
 
-	var _reactDocumentTitle = __webpack_require__(7);
+	var _reactDocumentTitle = __webpack_require__(13);
 
 	var _reactDocumentTitle2 = _interopRequireDefault(_reactDocumentTitle);
 
-	var _NavLink = __webpack_require__(8);
+	var _NavLink = __webpack_require__(14);
 
 	var _NavLink2 = _interopRequireDefault(_NavLink);
 
@@ -307,19 +376,19 @@
 	exports.default = App;
 
 /***/ },
-/* 6 */
+/* 12 */
 /***/ function(module, exports) {
 
 	module.exports = require("react-dom");
 
 /***/ },
-/* 7 */
+/* 13 */
 /***/ function(module, exports) {
 
 	module.exports = require("react-document-title");
 
 /***/ },
-/* 8 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -332,11 +401,11 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _react = __webpack_require__(1);
+	var _react = __webpack_require__(7);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRouter = __webpack_require__(3);
+	var _reactRouter = __webpack_require__(9);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -368,7 +437,7 @@
 	exports.default = NavLink;
 
 /***/ },
-/* 9 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -379,15 +448,15 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _react = __webpack_require__(1);
+	var _react = __webpack_require__(7);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(6);
+	var _reactDom = __webpack_require__(12);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _reactDocumentTitle = __webpack_require__(7);
+	var _reactDocumentTitle = __webpack_require__(13);
 
 	var _reactDocumentTitle2 = _interopRequireDefault(_reactDocumentTitle);
 
@@ -433,7 +502,7 @@
 	exports.default = Home;
 
 /***/ },
-/* 10 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -444,15 +513,15 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _react = __webpack_require__(1);
+	var _react = __webpack_require__(7);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(6);
+	var _reactDom = __webpack_require__(12);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _reactDocumentTitle = __webpack_require__(7);
+	var _reactDocumentTitle = __webpack_require__(13);
 
 	var _reactDocumentTitle2 = _interopRequireDefault(_reactDocumentTitle);
 
@@ -464,101 +533,122 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Patient = function (_Component) {
-	  _inherits(Patient, _Component);
+	var Login = function (_Component) {
+	  _inherits(Login, _Component);
 
-	  function Patient() {
-	    _classCallCheck(this, Patient);
+	  function Login() {
+	    _classCallCheck(this, Login);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Patient).apply(this, arguments));
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Login).apply(this, arguments));
 	  }
 
-	  _createClass(Patient, [{
+	  _createClass(Login, [{
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
 	        _reactDocumentTitle2.default,
-	        { title: 'Tempus - Patient' },
+	        { title: 'Tempus - Login' },
 	        _react2.default.createElement(
 	          'div',
-	          null,
+	          { className: 'row' },
 	          _react2.default.createElement(
 	            'h1',
 	            null,
-	            'Hello Patient!'
+	            'Please Login'
+	          ),
+	          _react2.default.createElement(
+	            'form',
+	            { className: 'col s12', onSubmit: this.handleSubmit },
+	            _react2.default.createElement(
+	              'div',
+	              { 'class': 'row' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'input-field col s6' },
+	                _react2.default.createElement('input', { id: 'username', type: 'text', className: 'validate' }),
+	                _react2.default.createElement(
+	                  'label',
+	                  { 'for': 'username' },
+	                  'Username'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'input-field col s6' },
+	                _react2.default.createElement('input', { id: 'password', type: 'password', className: 'validate' }),
+	                _react2.default.createElement(
+	                  'label',
+	                  { 'for': 'password' },
+	                  'Username'
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'row' },
+	              _react2.default.createElement(
+	                'button',
+	                { className: 'btn waves-effect waves-light', type: 'submit', name: 'action' },
+	                'Submit'
+	              )
+	            )
 	          )
 	        )
 	      );
 	    }
 	  }]);
 
-	  return Patient;
+	  return Login;
 	}(_react.Component);
 
-	exports.default = Patient;
-
-/***/ },
-/* 11 */
-/***/ function(module, exports) {
-
-	module.exports = require("express");
-
-/***/ },
-/* 12 */
-/***/ function(module, exports) {
-
-	module.exports = require("path");
-
-/***/ },
-/* 13 */
-/***/ function(module, exports) {
-
-	module.exports = require("serve-favicon");
-
-/***/ },
-/* 14 */
-/***/ function(module, exports) {
-
-	module.exports = require("morgan");
-
-/***/ },
-/* 15 */
-/***/ function(module, exports) {
-
-	module.exports = require("cookie-parser");
-
-/***/ },
-/* 16 */
-/***/ function(module, exports) {
-
-	module.exports = require("body-parser");
+	exports.default = Login;
 
 /***/ },
 /* 17 */
+/***/ function(module, exports) {
+
+	module.exports = require("dotenv");
+
+/***/ },
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var express = __webpack_require__(11);
-	var router = express.Router();
+	var mongoose = __webpack_require__(19);
 
-	/* GET home page. */
-	// router.get('/', function(req, res, next) {
-	//   res.render('index', { title: 'Express' });
-	// });
+	// connect us to the database.
 
-	router.post('/login', function (req, res, next) {});
+	var connectionString = process.env.DB;
+	console.log('Attempting to Connect to MongoDB');
+	mongoose.connect(connectionString);
 
-	module.exports = router;
+	mongoose.connection.on('connected', function () {
+	  console.log('Mongoose connected to: ' + process.env.DB);
+	});
+
+	mongoose.connection.on('error', function (error) {
+	  console.log('Mongoose error!' + error);
+	});
+
+	mongoose.connection.on('disconnected', function () {
+	  console.log('Mongoose disconnected from: ' + process.env.DB);
+	});
 
 /***/ },
-/* 18 */
+/* 19 */
+/***/ function(module, exports) {
+
+	module.exports = require("mongoose");
+
+/***/ },
+/* 20 */
 /***/ function(module, exports) {
 
 	module.exports = require("ejs");
 
 /***/ },
-/* 19 */
+/* 21 */
 /***/ function(module, exports) {
 
 	module.exports = require("node-sass-middleware");
