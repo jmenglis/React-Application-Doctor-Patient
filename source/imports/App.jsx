@@ -9,19 +9,29 @@ export default class App extends Component {
     return (
       <DocumentTitle title="Tempus - Home">
         <div>
-          <nav>
-            <div className="nav-wrapper">
-              <Link to="/" className="brand-logo">Tempus</Link>
-              <ul id="nav-mobile" className="right hide-on-med-and-down">
-                <li><NavLink to="/patient">Patient</NavLink></li>
-                <li><NavLink to="/doctor">Doctors</NavLink></li>
-              </ul>
+          <header>
+            <nav>
+              <div className="nav-wrapper">
+                <Link to="/" className="brand-logo">Tempus</Link>
+                <ul id="nav-mobile" className="right hide-on-med-and-down">
+                  <li><NavLink to="/Login">Login</NavLink></li>
+                </ul>
+              </div>
+            </nav>
+          </header>
+          <main>
+            <br />
+            <div className="container">
+              {this.props.children || <Home/>}
             </div>
-          </nav>
-          <br />
-          <div className="container">
-            {this.props.children || <Home/>}
-          </div>
+          </main>
+          <footer className="page-footer">
+            <div className="footer-copyright">
+              <div className="container">
+              © 2016 Josh English
+              </div>
+            </div>
+          </footer>
         </div>
       </DocumentTitle>
     );

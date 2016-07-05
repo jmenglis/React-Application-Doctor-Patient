@@ -2290,7 +2290,6 @@ ul.staggered-list li {
 
 footer.page-footer {
   margin-top: 20px;
-  padding-top: 20px;
   background-color: #ee6e73; }
   footer.page-footer .footer-copyright {
     overflow: hidden;
@@ -6202,5 +6201,13 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
 @media (min-height: 40.125em) {
   .picker--time .picker__box {
     margin-bottom: 5em; } }
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column; }
+
+main {
+  flex: 1 0 auto; }
 
 /*# sourceMappingURL=style.css.map */
