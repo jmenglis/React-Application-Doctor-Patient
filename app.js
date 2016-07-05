@@ -108,7 +108,7 @@
 	});
 
 	function renderPage(appHtml) {
-	  return '\n    <!doctype html public="storage">\n    <html>\n    <meta charset=utf-8/>\n    <title>My First React Router App</title>\n    <link rel="stylesheet" href="/stylesheets/style.css" />\n    <div id=app>' + appHtml + '</div>\n  <script src="/javascripts/jquery-3.0.0.js"></script>\n  <script src="/javascripts/materialize.js"></script>\n  <script src="/javascripts/main.jsx"></script>\n   ';
+	  return '\n    <!doctype html public="storage">\n    <html>\n    <meta charset=utf-8/>\n    <title>Tempus - Home</title>\n    <link rel="stylesheet" href="/stylesheets/style.css" />\n    <div id=react-render>' + appHtml + '</div>\n  <script src="/javascripts/main.jsx"></script>\n  <script src="/javascripts/jquery-3.0.0.js"></script>\n  <script src="/javascripts/materialize.js"></script>\n   ';
 	}
 
 	// catch 404 and forward to error handler

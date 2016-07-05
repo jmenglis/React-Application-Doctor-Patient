@@ -53,9 +53,9 @@ function renderPage(appHtml) {
     <!doctype html public="storage">
     <html>
     <meta charset=utf-8/>
-    <title>My First React Router App</title>
+    <title>Tempus - Home</title>
     <link rel="stylesheet" href="/stylesheets/style.css" />
-    <div id=app>${appHtml}</div>
+    <div id=react-render>${appHtml}</div>
   <script src="/javascripts/main.jsx"></script>
   <script src="/javascripts/jquery-3.0.0.js"></script>
   <script src="/javascripts/materialize.js"></script>
