@@ -110,19 +110,15 @@
 	app.use(_express2.default.static(_path2.default.join(__dirname, 'public'), { index: false }));
 
 	app.post('/login', function (req, res) {
-	  (0, _reactRouter.match)({ routes: _routes2.default, location: req.url }, function (err, redirect, props) {
-	    if (err) {
-	      res.status(500).send(err.message);
-	    } else if (redirect) {
-	      res.redirect(redirect.pathname + redirect.search);
-	    } else if (props) {
-
-	      var appHtml = (0, _server.renderToString)(_react2.default.createElement(_reactRouter.RouterContext, props));
-	      res.send(renderPage(appHtml));
-	    } else {
-	      res.status(404).send('Not Found');
-	    }
-	  });
+	  if (req.body.username === "Testing" && req.body.password === "1234") {
+	    res.json({
+	      failedLogin: false,
+	      username: "Testing",
+	      type: "Doctor"
+	    });
+	  } else {
+	    res.json({ failedLogin: true });
+	  }
 	});
 
 	app.get('*', function (req, res) {
@@ -525,6 +521,8 @@
 
 	var _reactDocumentTitle2 = _interopRequireDefault(_reactDocumentTitle);
 
+	var _reactRouter = __webpack_require__(9);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -533,18 +531,83 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Login = function (_Component) {
-	  _inherits(Login, _Component);
+	var Message = function (_Component) {
+	  _inherits(Message, _Component);
 
-	  function Login() {
+	  function Message() {
+	    _classCallCheck(this, Message);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Message).apply(this, arguments));
+	  }
+
+	  _createClass(Message, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        'Your password or username is incorrect'
+	      );
+	    }
+	  }]);
+
+	  return Message;
+	}(_react.Component);
+
+	var Login = function (_Component2) {
+	  _inherits(Login, _Component2);
+
+	  function Login(props) {
 	    _classCallCheck(this, Login);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Login).apply(this, arguments));
+	    var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(Login).call(this, props));
+
+	    _this2.state = {
+	      failedLogin: false
+	    };
+	    return _this2;
 	  }
 
 	  _createClass(Login, [{
+	    key: 'handleSubmit',
+	    value: function handleSubmit(e) {
+	      var _this3 = this;
+
+	      this.setState({ failedLogin: false });
+	      e.preventDefault();
+	      var username = _reactDom2.default.findDOMNode(this.refs.usernameInput).value.trim();
+	      var password = _reactDom2.default.findDOMNode(this.refs.passwordInput).value.trim();
+	      var data = {
+	        username: username,
+	        password: password
+
+	      };
+	      $.ajax({
+	        type: "POST",
+	        url: "/login",
+	        data: data,
+	        success: function success(myData) {
+	          if (myData.failedLogin) {
+	            _this3.setState({ failedLogin: true });
+	            console.log(_this3.state);
+	          } else {
+	            console.log(myData);
+	            _this3.props.history.push('/');
+	          }
+	        }
+	      });
+	      _reactDom2.default.findDOMNode(this.refs.usernameInput).value = '';
+	      _reactDom2.default.findDOMNode(this.refs.passwordInput).value = '';
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var failureMessage;
+	      if (this.state.failedLogin) {
+	        failureMessage = _react2.default.createElement(Message, null);
+	      } else {
+	        failureMessage = '';
+	      }
 	      return _react2.default.createElement(
 	        _reactDocumentTitle2.default,
 	        { title: 'Tempus - Login' },
@@ -556,30 +619,31 @@
 	            null,
 	            'Please Login'
 	          ),
+	          failureMessage,
 	          _react2.default.createElement(
 	            'form',
-	            { className: 'col s12', onSubmit: this.handleSubmit },
+	            { className: 'col s12', onSubmit: this.handleSubmit.bind(this) },
 	            _react2.default.createElement(
 	              'div',
-	              { 'class': 'row' },
+	              { className: 'row' },
 	              _react2.default.createElement(
 	                'div',
 	                { className: 'input-field col s6' },
-	                _react2.default.createElement('input', { id: 'username', type: 'text', className: 'validate' }),
+	                _react2.default.createElement('input', { ref: 'usernameInput', id: 'username', type: 'text', className: 'validate' }),
 	                _react2.default.createElement(
 	                  'label',
-	                  { 'for': 'username' },
+	                  { htmlFor: 'username' },
 	                  'Username'
 	                )
 	              ),
 	              _react2.default.createElement(
 	                'div',
 	                { className: 'input-field col s6' },
-	                _react2.default.createElement('input', { id: 'password', type: 'password', className: 'validate' }),
+	                _react2.default.createElement('input', { ref: 'passwordInput', id: 'password', type: 'password', className: 'validate' }),
 	                _react2.default.createElement(
 	                  'label',
-	                  { 'for': 'password' },
-	                  'Username'
+	                  { htmlFor: 'password' },
+	                  'Password'
 	                )
 	              )
 	            ),

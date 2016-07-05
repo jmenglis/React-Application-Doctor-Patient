@@ -33,19 +33,15 @@ app.use(require('node-sass-middleware')({
 app.use(express.static(path.join(__dirname, 'public'), {index: false}));
 
 app.post('/login', (req, res) => {
-    match({ routes, location: req.url }, (err, redirect, props) => {
-    if (err) {
-      res.status(500).send(err.message)
-    } else if (redirect) {
-      res.redirect(redirect.pathname + redirect.search)
-    } else if (props) {
-
-      const appHtml = renderToString(<RouterContext {...props}/>)
-      res.send(renderPage(appHtml))
-    } else {
-      res.status(404).send('Not Found')
-    }
-  })
+  if (req.body.username === "Testing" && req.body.password === "1234") {
+    res.json({
+      failedLogin:false,
+      username: "Testing",
+      type: "Doctor"
+    })
+  } else {
+    res.json({failedLogin:true})
+  }
 })
 
 app.get('*', (req, res) => {
