@@ -25,8 +25,8 @@ app.use(cookieSession({
   keys: ['key12345678'],
   maxAge: 180000
 }))
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }));
 app.use(require('node-sass-middleware')({
   src: path.join(__dirname, 'public'),
   dest: path.join(__dirname, 'public'),
@@ -44,6 +44,20 @@ app.get('/patientinfo', (req,res) => {
         address: patient.address
       })
     })
+  })
+})
+
+app.post('/upload', (req, res) => {
+  console.log("Hello");
+  let data = {
+    username: req.body.username,
+    filename: req.body.filename,
+    file: req.body.payload,
+  }
+  DBSchema.File.create(data), (err, results) => {
+  }
+  DBSchema.File.find({username: req.body.username}, (err, results) => {
+    res.json(results)
   })
 })
 

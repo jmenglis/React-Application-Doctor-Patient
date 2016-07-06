@@ -80,8 +80,7 @@ export default class Login extends Component {
               </div>
             </div>
             <div className="row">
-              <button className="btn waves-effect waves-light" type="submit" name="action">Submit
-              </button>
+              <button className="btn waves-effect waves-light" type="submit" name="action">Submit</button>
             </div>
           </form>
         </div>

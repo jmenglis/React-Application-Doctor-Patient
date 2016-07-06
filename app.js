@@ -107,8 +107,8 @@
 	  keys: ['key12345678'],
 	  maxAge: 180000
 	}));
-	app.use(_bodyParser2.default.json());
-	app.use(_bodyParser2.default.urlencoded({ extended: false }));
+	app.use(_bodyParser2.default.json({ limit: '50mb' }));
+	app.use(_bodyParser2.default.urlencoded({ limit: '50mb', extended: false }));
 	app.use(__webpack_require__(24)({
 	  src: _path2.default.join(__dirname, 'public'),
 	  dest: _path2.default.join(__dirname, 'public'),
@@ -126,6 +126,19 @@
 	        address: patient.address
 	      });
 	    });
+	  });
+	});
+
+	app.post('/upload', function (req, res) {
+	  console.log("Hello");
+	  var data = {
+	    username: req.body.username,
+	    filename: req.body.filename,
+	    file: req.body.payload
+	  };
+	  _schema2.default.File.create(data), function (err, results) {};
+	  _schema2.default.File.find({ username: req.body.username }, function (err, results) {
+	    res.json(results);
 	  });
 	});
 
@@ -905,7 +918,6 @@
 	    value: function componentDidMount() {
 	      var _this2 = this;
 
-	      console.log(this.state);
 	      $.ajax({
 	        type: "GET",
 	        url: "/patientinfo",
@@ -927,19 +939,34 @@
 	        _react2.default.createElement(
 	          'li',
 	          null,
-	          'Name: ',
+	          _react2.default.createElement(
+	            'strong',
+	            null,
+	            'Name:'
+	          ),
+	          ' ',
 	          this.state.name
 	        ),
 	        _react2.default.createElement(
 	          'li',
 	          null,
-	          'Age: ',
+	          _react2.default.createElement(
+	            'strong',
+	            null,
+	            'Age:'
+	          ),
+	          ' ',
 	          this.state.age
 	        ),
 	        _react2.default.createElement(
 	          'li',
 	          null,
-	          'Address:',
+	          _react2.default.createElement(
+	            'strong',
+	            null,
+	            'Address:'
+	          ),
+	          ' ',
 	          this.state.address
 	        )
 	      );
@@ -968,14 +995,13 @@
 	    value: function componentDidMount() {
 	      var _this4 = this;
 
-	      console.log(this.state);
 	      $.ajax({
 	        type: "GET",
 	        url: "/authorized",
 	        success: function success(userData) {
 	          _this4.setState({ username: userData.username });
 	          if (userData.loggedIn === false) {
-	            _reactRouter.browserHistory.push('/');
+	            _reactRouter.browserHistory.push('/login');
 	          } else if (userData.type === "Patient") {
 	            _reactRouter.browserHistory.push('/patient');
 	          }
@@ -1042,24 +1068,119 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Patient = function (_Component) {
-	  _inherits(Patient, _Component);
+	var PatientForm = function (_Component) {
+	  _inherits(PatientForm, _Component);
 
-	  function Patient() {
+	  function PatientForm() {
+	    _classCallCheck(this, PatientForm);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(PatientForm).apply(this, arguments));
+	  }
+
+	  _createClass(PatientForm, [{
+	    key: 'handleSubmit',
+	    value: function handleSubmit(e) {
+	      var _this2 = this;
+
+	      e.preventDefault();
+	      var files = document.querySelector('input[type=file]').files;
+	      var readURL = function readURL(file) {
+	        var reader = new FileReader();
+	        var base64file = void 0;
+	        var p1 = new Promise(function (resolve, reject) {
+	          reader.onload = function (e) {
+	            base64file = e.target.result;
+	            resolve(base64file);
+	          };
+	        });
+	        p1.then(function (result) {
+	          var combinedData = {
+	            username: _this2.props.username,
+	            filename: file.name,
+	            payload: result
+	          };
+	          $.ajax({
+	            url: '/upload',
+	            data: combinedData,
+	            type: 'POST',
+	            success: function success(upload) {
+	              console.log(upload);
+	            }
+	          });
+	        });
+	        reader.readAsDataURL(file);
+	      };
+	      if (files) {
+	        [].forEach.call(files, readURL);
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'form',
+	        { onSubmit: this.handleSubmit.bind(this) },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'file-field input-field' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'btn' },
+	            _react2.default.createElement(
+	              'span',
+	              null,
+	              'File'
+	            ),
+	            _react2.default.createElement('input', { type: 'file', multiple: true })
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'file-path-wrapper' },
+	            _react2.default.createElement('input', { className: 'file-path validate', type: 'text', placeholder: 'Upload one or more files' })
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'row centerize' },
+	          _react2.default.createElement(
+	            'button',
+	            { className: 'btn waves-effect waves-light', type: 'submit', name: 'action' },
+	            'Submit'
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return PatientForm;
+	}(_react.Component);
+
+	var Patient = function (_Component2) {
+	  _inherits(Patient, _Component2);
+
+	  function Patient(props) {
 	    _classCallCheck(this, Patient);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Patient).apply(this, arguments));
+	    var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(Patient).call(this, props));
+
+	    _this3.state = {
+	      username: null
+	    };
+	    return _this3;
 	  }
 
 	  _createClass(Patient, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
+	      var _this4 = this;
+
 	      $.ajax({
 	        type: "GET",
 	        url: "/authorized",
 	        success: function success(userData) {
+	          _this4.setState({ username: userData.username });
 	          if (userData.loggedIn === false) {
-	            _reactRouter.browserHistory.push('/');
+	            _reactRouter.browserHistory.push('/login');
 	          } else if (userData.type === "Doctor") {
 	            _reactRouter.browserHistory.push('/doctor');
 	          }
@@ -1076,10 +1197,12 @@
 	          'div',
 	          null,
 	          _react2.default.createElement(
-	            'h1',
+	            'h2',
 	            null,
-	            'Hello Patient'
-	          )
+	            'Welcome ',
+	            this.state.username
+	          ),
+	          _react2.default.createElement(PatientForm, { username: this.state.username })
 	        )
 	      );
 	    }
@@ -1118,6 +1241,7 @@
 
 	var fileSchema = new mongoose.Schema({
 	  username: String,
+	  filename: String,
 	  file: []
 	});
 

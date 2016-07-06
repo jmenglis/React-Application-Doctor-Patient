@@ -6210,4 +6210,7 @@ body {
 main {
   flex: 1 0 auto; }
 
+.centerize {
+  text-align: center; }
+
 /*# sourceMappingURL=style.css.map */

@@ -21,6 +21,7 @@ var Patient = mongoose.model('Patient', patientSchema);
 
 var fileSchema = new mongoose.Schema({
   username: String,
+  filename: String,
   file: []
 });
 
