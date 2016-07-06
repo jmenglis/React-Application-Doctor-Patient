@@ -3,6 +3,27 @@ import ReactDOM from 'react-dom'
 import DocumentTitle from 'react-document-title'
 import { browserHistory } from 'react-router'
 
+class PatientInfo extends Component {
+  // componentDidMount() {
+  //   $.ajax({
+  //     type: "GET"
+  //     url: "/patientinfo"
+  //     success: (patientData) => {
+  //       console.log(patientData)
+  //     }
+  //   })
+  // }
+  render() {
+    return (
+      <ul>
+      <li>Name:</li>
+      <li>Address:</li>
+      <li>Phone:</li>
+      </ul>
+    )
+  }
+}
+
 
 export default class Doctor extends Component {
   componentDidMount() {
@@ -22,7 +43,7 @@ export default class Doctor extends Component {
     return (
       <DocumentTitle title="Tempus - Doctor">
         <div>
-          <h1>Hello Doctor</h1>
+          <PatientInfo />
         </div>
       </DocumentTitle>
     )

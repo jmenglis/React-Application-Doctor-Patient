@@ -86,12 +86,16 @@
 
 	var _routes2 = _interopRequireDefault(_routes);
 
+	var _schema = __webpack_require__(20);
+
+	var _schema2 = _interopRequireDefault(_schema);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(20).config();
+	__webpack_require__(22).config();
 
 
-	__webpack_require__(21);
+	__webpack_require__(23);
 
 	var app = (0, _express2.default)();
 	app.use((0, _compression2.default)());
@@ -105,7 +109,7 @@
 	}));
 	app.use(_bodyParser2.default.json());
 	app.use(_bodyParser2.default.urlencoded({ extended: false }));
-	app.use(__webpack_require__(23)({
+	app.use(__webpack_require__(24)({
 	  src: _path2.default.join(__dirname, 'public'),
 	  dest: _path2.default.join(__dirname, 'public'),
 	  sourceMap: true
@@ -113,27 +117,24 @@
 	app.use(_express2.default.static(_path2.default.join(__dirname, 'public'), { index: false }));
 
 	app.post('/login', function (req, res) {
-	  if (req.body.username === "Testing" && req.body.password === "1234") {
-	    req.session.username = req.body.username;
-	    req.session.loggedIn = true;
-	    req.session.type = "Doctor";
-	    res.json({
-	      failedLogin: false,
-	      username: "Testing",
-	      type: "Doctor"
-	    });
-	  } else if (req.body.username === "Testing2" && req.body.password === "1234") {
-	    req.session.username = req.body.username;
-	    req.session.loggedIn = true;
-	    req.session.type = "Patient";
-	    res.json({
-	      failedLogin: false,
-	      username: "Testing2",
-	      type: "Patient"
-	    });
-	  } else {
-	    res.json({ failedLogin: true });
-	  }
+	  var userInfo = {
+	    username: req.body.username,
+	    password: req.body.password
+	  };
+	  _schema2.default.User.findOne({ username: req.body.username, password: req.body.password }, function (err, user) {
+	    if (user) {
+	      req.session.username = user.username;
+	      req.session.loggedIn = true;
+	      req.session.type = user.type;
+	      res.json({
+	        failedLogin: false,
+	        username: user.username,
+	        type: user.type
+	      });
+	    } else {
+	      res.json({ failedLogin: true });
+	    }
+	  });
 	});
 
 	app.get('/authorized', function (req, res) {
@@ -1001,17 +1002,62 @@
 
 /***/ },
 /* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var mongoose = __webpack_require__(21);
+
+	// userSchema
+
+	var userSchema = new mongoose.Schema({
+	  type: String,
+	  username: String,
+	  password: String
+	});
+
+	var User = mongoose.model('User', userSchema);
+
+	var patientSchema = new mongoose.Schema({
+	  name: String,
+	  age: Number,
+	  address: String
+	});
+
+	var Patient = mongoose.model('Patient', patientSchema);
+
+	var fileSchema = new mongoose.Schema({
+	  username: String,
+	  file: []
+	});
+
+	var File = mongoose.model('File', fileSchema);
+
+	module.exports = {
+	  User: User,
+	  Patient: Patient,
+	  File: File
+	};
+
+/***/ },
+/* 21 */
+/***/ function(module, exports) {
+
+	module.exports = require("mongoose");
+
+/***/ },
+/* 22 */
 /***/ function(module, exports) {
 
 	module.exports = require("dotenv");
 
 /***/ },
-/* 21 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var mongoose = __webpack_require__(22);
+	var mongoose = __webpack_require__(21);
 
 	// connect us to the database.
 
@@ -1032,13 +1078,7 @@
 	});
 
 /***/ },
-/* 22 */
-/***/ function(module, exports) {
-
-	module.exports = require("mongoose");
-
-/***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports) {
 
 	module.exports = require("node-sass-middleware");

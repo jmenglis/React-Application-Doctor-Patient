@@ -10,9 +10,10 @@ import { renderToString } from 'react-dom/server'
 import { match, RouterContext } from 'react-router'
 import compression from 'compression'
 import routes from './source/imports/routes.jsx'
-
+import DBSchema from './models/schema'
 
 require('./db/database')
+
 
 var app = express()
 app.use(compression())
@@ -34,27 +35,24 @@ app.use(require('node-sass-middleware')({
 app.use(express.static(path.join(__dirname, 'public'), {index: false}))
 
 app.post('/login', (req, res) => {
-  if (req.body.username === "Testing" && req.body.password === "1234") {
-    req.session.username = req.body.username
-    req.session.loggedIn = true
-    req.session.type = "Doctor"
-    res.json({
-      failedLogin:false,
-      username: "Testing",
-      type: "Doctor"
-    })
-  } else if (req.body.username === "Testing2" && req.body.password === "1234") {
-    req.session.username = req.body.username
-    req.session.loggedIn = true
-    req.session.type = "Patient"
-    res.json({
-      failedLogin:false,
-      username: "Testing2",
-      type: "Patient"
-    })
-  } else {
-    res.json({failedLogin:true})
+  let userInfo = {
+    username: req.body.username,
+    password: req.body.password
   }
+  DBSchema.User.findOne({username: req.body.username, password: req.body.password}, function(err, user) {
+    if (user) {
+      req.session.username = user.username
+      req.session.loggedIn = true
+      req.session.type = user.type
+      res.json({
+        failedLogin:false,
+        username: user.username,
+        type: user.type
+      })
+    } else {
+      res.json({failedLogin:true})
+    }
+  })
 })
 
 app.get('/authorized', (req, res) => {
@@ -73,7 +71,6 @@ app.get('/authorized', (req, res) => {
 
 app.get('/logout', (req, res) => {
   req.session = null
-  console.log(req.session)
   res.json({
     loggedIn: false
   })
@@ -111,7 +108,7 @@ function renderPage(appHtml) {
 
 var PORT = process.env.PORT || 3000
 app.listen(PORT, function() {
-  console.log('Production Express server running at localhost:' + PORT)
+  console.log('Production server is running at localhost:' + PORT)
 })
 
 
