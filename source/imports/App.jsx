@@ -24,7 +24,6 @@ class LoggedOut extends Component {
           }
         })()}
         <li><NavLink to="/" onClick={this.props.logUser}>Logout</NavLink></li>
-
       </div>
     )
   }
