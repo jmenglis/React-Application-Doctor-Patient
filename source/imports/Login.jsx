@@ -47,11 +47,12 @@ export default class Login extends Component {
       success: (userData) => {
         if (userData.failedLogin) {
           this.setState({ failedLogin: true })
-          console.log(this.state)
         } else {
           if (userData.type === "Doctor") {
+            this.props.logUserIn(userData.type)
             browserHistory.push('/doctor')
           } else {
+            this.props.logUserIn(userData.type)
             browserHistory.push('/patient')
           }
         }

@@ -26555,13 +26555,23 @@
 
 	var _Login2 = _interopRequireDefault(_Login);
 
+	var _Doctor = __webpack_require__(241);
+
+	var _Doctor2 = _interopRequireDefault(_Doctor);
+
+	var _Patient = __webpack_require__(242);
+
+	var _Patient2 = _interopRequireDefault(_Patient);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	module.exports = _react2.default.createElement(
 	  _reactRouter.Route,
 	  { path: '/', component: _App2.default },
 	  _react2.default.createElement(_reactRouter.IndexRoute, { component: _Home2.default }),
-	  _react2.default.createElement(_reactRouter.Route, { path: '/Login', component: _Login2.default })
+	  _react2.default.createElement(_reactRouter.Route, { path: '/login', component: _Login2.default }),
+	  _react2.default.createElement(_reactRouter.Route, { path: '/doctor', component: _Doctor2.default }),
+	  _react2.default.createElement(_reactRouter.Route, { path: '/patient', component: _Patient2.default })
 	);
 
 /***/ },
@@ -26619,7 +26629,7 @@
 	        null,
 	        _react2.default.createElement(
 	          _NavLink2.default,
-	          { to: '/Login' },
+	          { to: '/login' },
 	          'Login'
 	        )
 	      );
@@ -26641,13 +26651,45 @@
 	  _createClass(LoggedOut, [{
 	    key: 'render',
 	    value: function render() {
+	      var _this3 = this;
+
 	      return _react2.default.createElement(
-	        'li',
+	        'div',
 	        null,
+	        function () {
+	          switch (_this3.props.type) {
+	            case "Doctor":
+	              return _react2.default.createElement(
+	                'li',
+	                null,
+	                _react2.default.createElement(
+	                  _NavLink2.default,
+	                  { to: '/doctor' },
+	                  'Doctor'
+	                )
+	              );
+	            case "Patient":
+	              return _react2.default.createElement(
+	                'li',
+	                null,
+	                _react2.default.createElement(
+	                  _NavLink2.default,
+	                  { to: '/patient' },
+	                  'Patient'
+	                )
+	              );
+	            default:
+	              return "";
+	          }
+	        }(),
 	        _react2.default.createElement(
-	          _NavLink2.default,
-	          { to: '/Logout' },
-	          'Logout'
+	          'li',
+	          null,
+	          _react2.default.createElement(
+	            _NavLink2.default,
+	            { to: '/', onClick: this.props.logUser },
+	            'Logout'
+	          )
 	        )
 	      );
 	    }
@@ -26662,27 +26704,59 @@
 	  function App(props) {
 	    _classCallCheck(this, App);
 
-	    var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(App).call(this, props));
+	    var _this4 = _possibleConstructorReturn(this, Object.getPrototypeOf(App).call(this, props));
 
-	    _this3.state = {
-	      logoutButton: false
+	    _this4.state = {
+	      logoutButton: false,
+	      type: ''
 	    };
-	    return _this3;
+	    _this4.logUserOut = _this4.logUserOut.bind(_this4);
+	    _this4.logUserIn = _this4.logUserIn.bind(_this4);
+	    return _this4;
 	  }
 
 	  _createClass(App, [{
+	    key: 'logUserOut',
+	    value: function logUserOut() {
+	      var _this5 = this;
+
+	      $.ajax({
+	        type: "GET",
+	        url: "/logout",
+	        success: function success(userData) {
+	          if (userData.loggedIn === false) {
+	            _this5.setState({ logoutButton: false });
+	          }
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'logUserIn',
+	    value: function logUserIn(type) {
+	      this.setState({
+	        logoutButton: true,
+	        type: type
+	      });
+	    }
+	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      var _this4 = this;
+	      var _this6 = this;
 
 	      $.ajax({
 	        type: "GET",
 	        url: "/authorized",
 	        success: function success(userData) {
 	          if (userData.loggedIn) {
-	            _this4.setState({ logoutButton: true });
+	            _this6.setState({
+	              logoutButton: true,
+	              type: userData.type
+	            });
 	          } else {
-	            _this4.setState({ logoutButton: false });
+	            _this6.setState({
+	              logoutButton: false,
+	              type: ''
+	            });
 	          }
 	        }
 	      });
@@ -26690,7 +26764,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var loggedButton = this.state.logoutButton ? _react2.default.createElement(LoggedOut, null) : _react2.default.createElement(LoggedIn, null);
+	      var loggedButton = this.state.logoutButton ? _react2.default.createElement(LoggedOut, { type: this.state.type, logUser: this.logUserOut }) : _react2.default.createElement(LoggedIn, null);
 	      return _react2.default.createElement(
 	        _reactDocumentTitle2.default,
 	        { title: 'Tempus - Home' },
@@ -26726,7 +26800,7 @@
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'container' },
-	              this.props.children || _react2.default.createElement(Home, null)
+	              _react2.default.cloneElement(this.props.children, { logUserIn: this.logUserIn }) || _react2.default.createElement(Home, null)
 	            )
 	          )
 	        )
@@ -27229,11 +27303,12 @@
 	        success: function success(userData) {
 	          if (userData.failedLogin) {
 	            _this3.setState({ failedLogin: true });
-	            console.log(_this3.state);
 	          } else {
 	            if (userData.type === "Doctor") {
+	              _this3.props.logUserIn(userData.type);
 	              _reactRouter.browserHistory.push('/doctor');
 	            } else {
+	              _this3.props.logUserIn(userData.type);
 	              _reactRouter.browserHistory.push('/patient');
 	            }
 	          }
@@ -27304,6 +27379,170 @@
 	}(_react.Component);
 
 	exports.default = Login;
+
+/***/ },
+/* 241 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(33);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _reactDocumentTitle = __webpack_require__(234);
+
+	var _reactDocumentTitle2 = _interopRequireDefault(_reactDocumentTitle);
+
+	var _reactRouter = __webpack_require__(170);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Doctor = function (_Component) {
+	  _inherits(Doctor, _Component);
+
+	  function Doctor() {
+	    _classCallCheck(this, Doctor);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Doctor).apply(this, arguments));
+	  }
+
+	  _createClass(Doctor, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      $.ajax({
+	        type: "GET",
+	        url: "/authorized",
+	        success: function success(userData) {
+	          if (userData.loggedIn === false) {
+	            _reactRouter.browserHistory.push('/');
+	          } else if (userData.type === "Patient") {
+	            _reactRouter.browserHistory.push('/patient');
+	          }
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        _reactDocumentTitle2.default,
+	        { title: 'Tempus - Doctor' },
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'h1',
+	            null,
+	            'Hello Doctor'
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Doctor;
+	}(_react.Component);
+
+	exports.default = Doctor;
+
+/***/ },
+/* 242 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(33);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _reactDocumentTitle = __webpack_require__(234);
+
+	var _reactDocumentTitle2 = _interopRequireDefault(_reactDocumentTitle);
+
+	var _reactRouter = __webpack_require__(170);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Patient = function (_Component) {
+	  _inherits(Patient, _Component);
+
+	  function Patient() {
+	    _classCallCheck(this, Patient);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Patient).apply(this, arguments));
+	  }
+
+	  _createClass(Patient, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      $.ajax({
+	        type: "GET",
+	        url: "/authorized",
+	        success: function success(userData) {
+	          if (userData.loggedIn === false) {
+	            _reactRouter.browserHistory.push('/');
+	          } else if (userData.type === "Doctor") {
+	            _reactRouter.browserHistory.push('/doctor');
+	          }
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        _reactDocumentTitle2.default,
+	        { title: 'Tempus - Patient' },
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'h1',
+	            null,
+	            'Hello Patient'
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Patient;
+	}(_react.Component);
+
+	exports.default = Patient;
 
 /***/ }
 /******/ ]);

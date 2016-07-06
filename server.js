@@ -67,7 +67,20 @@ app.get('/authorized', (req, res) => {
        loggedIn: true,
        type: req.session.type
      })
+  } else {
+    res.json({
+       loggedIn: false,
+       type: req.session.type
+    })
   }
+})
+
+app.get('/logout', (req, res) => {
+  req.session = null
+  console.log(req.session)
+  res.json({
+    loggedIn: false
+  })
 })
 
 app.get('*', (req, res) => {
@@ -77,7 +90,6 @@ app.get('*', (req, res) => {
     } else if (redirect) {
       res.redirect(redirect.pathname + redirect.search)
     } else if (props) {
-      console.log(req.session)
       const appHtml = renderToString(<RouterContext {...props}/>)
       res.send(renderPage(appHtml))
     } else {

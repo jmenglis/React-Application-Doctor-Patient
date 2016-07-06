@@ -3,18 +3,29 @@ import ReactDOM from 'react-dom'
 import { Link } from 'react-router'
 import DocumentTitle from 'react-document-title'
 import NavLink from './NavLink.jsx'
+import { browserHistory } from 'react-router'
 
 class LoggedIn extends Component {
-  render () {
+  render() {
     return (
-      <li><NavLink to="/Login">Login</NavLink></li>
+      <li><NavLink to="/login">Login</NavLink></li>
     )
   }
 }
 class LoggedOut extends Component {
-  render () {
+  render() {
     return (
-      <li><NavLink to="/Logout">Logout</NavLink></li>
+      <div>
+        {(() => {
+          switch (this.props.type) {
+            case "Doctor": return <li><NavLink to="/doctor">Doctor</NavLink></li>
+            case "Patient": return <li><NavLink to="/patient">Patient</NavLink></li>
+            default: return ""
+          }
+        })()}
+        <li><NavLink to="/" onClick={this.props.logUser}>Logout</NavLink></li>
+
+      </div>
     )
   }
 }
@@ -24,8 +35,28 @@ export default class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      logoutButton: false
+      logoutButton: false,
+      type: ''
     }
+    this.logUserOut = this.logUserOut.bind(this)
+    this.logUserIn = this.logUserIn.bind(this)
+  }
+  logUserOut() {
+    $.ajax({
+      type: "GET",
+      url: "/logout",
+      success: (userData) => {
+        if (userData.loggedIn === false) {
+          this.setState({logoutButton: false})
+        }
+      }
+    })
+  }
+  logUserIn(type) {
+    this.setState({
+      logoutButton: true,
+      type: type
+    })
   }
   componentDidMount() {
     $.ajax({
@@ -33,15 +64,21 @@ export default class App extends Component {
       url: "/authorized",
       success: (userData) => {
         if (userData.loggedIn) {
-          this.setState({logoutButton: true})
+          this.setState({
+            logoutButton: true,
+            type: userData.type
+          })
         } else {
-          this.setState({logoutButton: false})
+          this.setState({
+            logoutButton: false,
+            type: ''
+          })
         }
       }
     })
   }
   render() {
-    var loggedButton = this.state.logoutButton ? <LoggedOut /> : <LoggedIn />
+    let loggedButton = this.state.logoutButton ? <LoggedOut type={this.state.type} logUser={this.logUserOut} /> : <LoggedIn />
     return (
       <DocumentTitle title="Tempus - Home">
         <div>
@@ -58,7 +95,7 @@ export default class App extends Component {
           <main>
             <br />
             <div className="container">
-              {this.props.children || <Home/>}
+              {React.cloneElement(this.props.children, {logUserIn: this.logUserIn}) || <Home />}
             </div>
           </main>
           {/* <footer className="page-footer">
