@@ -11,7 +11,7 @@ export default class Patient extends Component {
       url: "/authorized",
       success: (userData) => {
         if (userData.loggedIn === false) {
-          browserHistory.push('/')
+          browserHistory.push('/login')
         } else if (userData.type === "Doctor") {
           browserHistory.push('/doctor')
         }

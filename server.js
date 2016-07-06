@@ -34,12 +34,25 @@ app.use(require('node-sass-middleware')({
 }))
 app.use(express.static(path.join(__dirname, 'public'), {index: false}))
 
+app.get('/patientinfo', (req,res) => {
+  DBSchema.Patient.count().exec( (err, count) => {
+    let random = Math.floor(Math.random() * count)
+    DBSchema.Patient.findOne().skip(random).exec( (err, patient) => {
+      res.json({
+        name: patient.name,
+        age: patient.age,
+        address: patient.address
+      })
+    })
+  })
+})
+
 app.post('/login', (req, res) => {
   let userInfo = {
     username: req.body.username,
     password: req.body.password
   }
-  DBSchema.User.findOne({username: req.body.username, password: req.body.password}, function(err, user) {
+  DBSchema.User.findOne({username: req.body.username, password: req.body.password}, (err, user) => {
     if (user) {
       req.session.username = user.username
       req.session.loggedIn = true
@@ -58,13 +71,15 @@ app.post('/login', (req, res) => {
 app.get('/authorized', (req, res) => {
   if (req.session.loggedIn === true) {
      res.json({
-       loggedIn: true,
-       type: req.session.type
+      username: req.session.username,
+      loggedIn: true,
+      type: req.session.type
      })
   } else {
     res.json({
-       loggedIn: false,
-       type: req.session.type
+      username: null,
+      loggedIn: false,
+      type: null
     })
   }
 })

@@ -4,21 +4,33 @@ import DocumentTitle from 'react-document-title'
 import { browserHistory } from 'react-router'
 
 class PatientInfo extends Component {
-  // componentDidMount() {
-  //   $.ajax({
-  //     type: "GET"
-  //     url: "/patientinfo"
-  //     success: (patientData) => {
-  //       console.log(patientData)
-  //     }
-  //   })
-  // }
+  constructor(props) {
+    super(props)
+    this.state = {
+      name: '',
+      age: '',
+      address: ''
+    }
+  }
+  componentDidMount() {
+    $.ajax({
+      type: "GET",
+      url: "/patientinfo",
+      success: (patientData) => {
+        this.setState({
+          name: patientData.name,
+          age: patientData.age,
+          address: patientData.address
+        })
+      }
+    })
+  }
   render() {
     return (
       <ul>
-      <li>Name:</li>
-      <li>Address:</li>
-      <li>Phone:</li>
+      <li><strong>Name:</strong> {this.state.name}</li>
+      <li><strong>Age:</strong> {this.state.age}</li>
+      <li><strong>Address:</strong> {this.state.address}</li>
       </ul>
     )
   }
@@ -26,13 +38,20 @@ class PatientInfo extends Component {
 
 
 export default class Doctor extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      username: null,
+    }
+  }
   componentDidMount() {
     $.ajax({
       type: "GET",
       url: "/authorized",
       success: (userData) => {
+        this.setState({ username: userData.username})
         if (userData.loggedIn === false) {
-          browserHistory.push('/')
+          browserHistory.push('/login')
         } else if (userData.type === "Patient") {
           browserHistory.push('/patient')
         }
@@ -43,6 +62,7 @@ export default class Doctor extends Component {
     return (
       <DocumentTitle title="Tempus - Doctor">
         <div>
+          <h2>Welcome Back {this.state.username}</h2>
           <PatientInfo />
         </div>
       </DocumentTitle>

@@ -116,6 +116,19 @@
 	}));
 	app.use(_express2.default.static(_path2.default.join(__dirname, 'public'), { index: false }));
 
+	app.get('/patientinfo', function (req, res) {
+	  _schema2.default.Patient.count().exec(function (err, count) {
+	    var random = Math.floor(Math.random() * count);
+	    _schema2.default.Patient.findOne().skip(random).exec(function (err, patient) {
+	      res.json({
+	        name: patient.name,
+	        age: patient.age,
+	        address: patient.address
+	      });
+	    });
+	  });
+	});
+
 	app.post('/login', function (req, res) {
 	  var userInfo = {
 	    username: req.body.username,
@@ -140,20 +153,21 @@
 	app.get('/authorized', function (req, res) {
 	  if (req.session.loggedIn === true) {
 	    res.json({
+	      username: req.session.username,
 	      loggedIn: true,
 	      type: req.session.type
 	    });
 	  } else {
 	    res.json({
+	      username: null,
 	      loggedIn: false,
-	      type: req.session.type
+	      type: null
 	    });
 	  }
 	});
 
 	app.get('/logout', function (req, res) {
 	  req.session = null;
-	  console.log(req.session);
 	  res.json({
 	    loggedIn: false
 	  });
@@ -180,7 +194,7 @@
 
 	var PORT = process.env.PORT || 3000;
 	app.listen(PORT, function () {
-	  console.log('Production Express server running at localhost:' + PORT);
+	  console.log('Production server is running at localhost:' + PORT);
 	});
 
 	module.exports = app;
@@ -870,22 +884,96 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Doctor = function (_Component) {
-	  _inherits(Doctor, _Component);
+	var PatientInfo = function (_Component) {
+	  _inherits(PatientInfo, _Component);
 
-	  function Doctor() {
+	  function PatientInfo(props) {
+	    _classCallCheck(this, PatientInfo);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PatientInfo).call(this, props));
+
+	    _this.state = {
+	      name: '',
+	      age: '',
+	      address: ''
+	    };
+	    return _this;
+	  }
+
+	  _createClass(PatientInfo, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this2 = this;
+
+	      console.log(this.state);
+	      $.ajax({
+	        type: "GET",
+	        url: "/patientinfo",
+	        success: function success(patientData) {
+	          _this2.setState({
+	            name: patientData.name,
+	            age: patientData.age,
+	            address: patientData.address
+	          });
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'ul',
+	        null,
+	        _react2.default.createElement(
+	          'li',
+	          null,
+	          'Name: ',
+	          this.state.name
+	        ),
+	        _react2.default.createElement(
+	          'li',
+	          null,
+	          'Age: ',
+	          this.state.age
+	        ),
+	        _react2.default.createElement(
+	          'li',
+	          null,
+	          'Address:',
+	          this.state.address
+	        )
+	      );
+	    }
+	  }]);
+
+	  return PatientInfo;
+	}(_react.Component);
+
+	var Doctor = function (_Component2) {
+	  _inherits(Doctor, _Component2);
+
+	  function Doctor(props) {
 	    _classCallCheck(this, Doctor);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Doctor).apply(this, arguments));
+	    var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(Doctor).call(this, props));
+
+	    _this3.state = {
+	      username: null
+	    };
+	    return _this3;
 	  }
 
 	  _createClass(Doctor, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
+	      var _this4 = this;
+
+	      console.log(this.state);
 	      $.ajax({
 	        type: "GET",
 	        url: "/authorized",
 	        success: function success(userData) {
+	          _this4.setState({ username: userData.username });
 	          if (userData.loggedIn === false) {
 	            _reactRouter.browserHistory.push('/');
 	          } else if (userData.type === "Patient") {
@@ -904,10 +992,12 @@
 	          'div',
 	          null,
 	          _react2.default.createElement(
-	            'h1',
+	            'h2',
 	            null,
-	            'Hello Doctor'
-	          )
+	            'Welcome Back ',
+	            this.state.username
+	          ),
+	          _react2.default.createElement(PatientInfo, null)
 	        )
 	      );
 	    }
