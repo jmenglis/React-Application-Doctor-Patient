@@ -78,25 +78,24 @@
 
 	var _reactRouter = __webpack_require__(9);
 
-	var _routes = __webpack_require__(10);
+	var _compression = __webpack_require__(10);
+
+	var _compression2 = _interopRequireDefault(_compression);
+
+	var _routes = __webpack_require__(11);
 
 	var _routes2 = _interopRequireDefault(_routes);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(19).config();
+	__webpack_require__(20).config();
 
 
-	__webpack_require__(20);
+	__webpack_require__(21);
 
 	var app = (0, _express2.default)();
+	app.use((0, _compression2.default)());
 
-	// view engine setup
-	app.engine('html', __webpack_require__(22).renderFile);
-	app.set('views', _path2.default.join(__dirname, 'views'));
-	app.set('view engine', 'html');
-
-	// uncomment after placing your favicon in /public
 	//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 	app.use((0, _morgan2.default)('dev'));
 	app.use((0, _cookieSession2.default)({
@@ -175,39 +174,8 @@
 	});
 
 	function renderPage(appHtml) {
-	  return '\n    <!doctype html public="storage">\n    <html>\n    <meta charset=utf-8/>\n    <title>Tempus - Home</title>\n    <link rel="stylesheet" href="/stylesheets/style.css" />\n    <div id=react-render>' + appHtml + '</div>\n    <script src="/javascripts/jquery-3.0.0.js"></script>\n    <script src="/javascripts/materialize.js"></script>\n    <script src="/javascripts/main.jsx"></script>\n   ';
+	  return '\n    <!doctype html public="storage">\n    <html>\n    <meta charset=utf-8/>\n    <title>Tempus - Home</title>\n    <link rel="stylesheet" href="/stylesheets/style.css" />\n    <div id=react-render>' + appHtml + '</div>\n    <script src="/javascripts/jquery-3.0.0.js"></script>\n    <script src="/javascripts/materialize.js"></script>\n    <script src="/javascripts/main.js"></script>\n   ';
 	}
-
-	// catch 404 and forward to error handler
-	// app.use(function(req, res, next) {
-	//   var err = new Error('Not Found');
-	//   err.status = 404;
-	//   next(err);
-	// });
-
-	// error handlers
-
-	// development error handler
-	// will print stacktrace
-	// if (app.get('env') === 'development') {
-	//   app.use(function(err, req, res, next) {
-	//     res.status(err.status || 500);
-	//     res.render('error', {
-	//       message: err.message,
-	//       error: err
-	//     });
-	//   });
-	// }
-
-	// // production error handler
-	// // no stacktraces leaked to user
-	// app.use(function(err, req, res, next) {
-	//   res.status(err.status || 500);
-	//   res.render('error', {
-	//     message: err.message,
-	//     error: {}
-	//   });
-	// });
 
 	var PORT = process.env.PORT || 3000;
 	app.listen(PORT, function () {
@@ -272,6 +240,12 @@
 
 /***/ },
 /* 10 */
+/***/ function(module, exports) {
+
+	module.exports = require("compression");
+
+/***/ },
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -282,23 +256,23 @@
 
 	var _reactRouter = __webpack_require__(9);
 
-	var _App = __webpack_require__(11);
+	var _App = __webpack_require__(12);
 
 	var _App2 = _interopRequireDefault(_App);
 
-	var _Home = __webpack_require__(15);
+	var _Home = __webpack_require__(16);
 
 	var _Home2 = _interopRequireDefault(_Home);
 
-	var _Login = __webpack_require__(16);
+	var _Login = __webpack_require__(17);
 
 	var _Login2 = _interopRequireDefault(_Login);
 
-	var _Doctor = __webpack_require__(17);
+	var _Doctor = __webpack_require__(18);
 
 	var _Doctor2 = _interopRequireDefault(_Doctor);
 
-	var _Patient = __webpack_require__(18);
+	var _Patient = __webpack_require__(19);
 
 	var _Patient2 = _interopRequireDefault(_Patient);
 
@@ -314,7 +288,7 @@
 	);
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -329,17 +303,17 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(12);
+	var _reactDom = __webpack_require__(13);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
 	var _reactRouter = __webpack_require__(9);
 
-	var _reactDocumentTitle = __webpack_require__(13);
+	var _reactDocumentTitle = __webpack_require__(14);
 
 	var _reactDocumentTitle2 = _interopRequireDefault(_reactDocumentTitle);
 
-	var _NavLink = __webpack_require__(14);
+	var _NavLink = __webpack_require__(15);
 
 	var _NavLink2 = _interopRequireDefault(_NavLink);
 
@@ -553,19 +527,19 @@
 	exports.default = App;
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports) {
 
 	module.exports = require("react-dom");
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports) {
 
 	module.exports = require("react-document-title");
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -614,7 +588,7 @@
 	exports.default = NavLink;
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -629,11 +603,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(12);
+	var _reactDom = __webpack_require__(13);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _reactDocumentTitle = __webpack_require__(13);
+	var _reactDocumentTitle = __webpack_require__(14);
 
 	var _reactDocumentTitle2 = _interopRequireDefault(_reactDocumentTitle);
 
@@ -679,7 +653,7 @@
 	exports.default = Home;
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -694,11 +668,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(12);
+	var _reactDom = __webpack_require__(13);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _reactDocumentTitle = __webpack_require__(13);
+	var _reactDocumentTitle = __webpack_require__(14);
 
 	var _reactDocumentTitle2 = _interopRequireDefault(_reactDocumentTitle);
 
@@ -862,7 +836,7 @@
 	exports.default = Login;
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -877,11 +851,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(12);
+	var _reactDom = __webpack_require__(13);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _reactDocumentTitle = __webpack_require__(13);
+	var _reactDocumentTitle = __webpack_require__(14);
 
 	var _reactDocumentTitle2 = _interopRequireDefault(_reactDocumentTitle);
 
@@ -944,7 +918,7 @@
 	exports.default = Doctor;
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -959,11 +933,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(12);
+	var _reactDom = __webpack_require__(13);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _reactDocumentTitle = __webpack_require__(13);
+	var _reactDocumentTitle = __webpack_require__(14);
 
 	var _reactDocumentTitle2 = _interopRequireDefault(_reactDocumentTitle);
 
@@ -1026,18 +1000,18 @@
 	exports.default = Patient;
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports) {
 
 	module.exports = require("dotenv");
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var mongoose = __webpack_require__(21);
+	var mongoose = __webpack_require__(22);
 
 	// connect us to the database.
 
@@ -1058,16 +1032,10 @@
 	});
 
 /***/ },
-/* 21 */
-/***/ function(module, exports) {
-
-	module.exports = require("mongoose");
-
-/***/ },
 /* 22 */
 /***/ function(module, exports) {
 
-	module.exports = require("ejs");
+	module.exports = require("mongoose");
 
 /***/ },
 /* 23 */

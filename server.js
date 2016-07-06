@@ -8,19 +8,15 @@ import cookieSession from 'cookie-session'
 import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { match, RouterContext } from 'react-router'
+import compression from 'compression'
 import routes from './source/imports/routes.jsx'
 
 
 require('./db/database')
 
 var app = express()
+app.use(compression())
 
-// view engine setup
-app.engine('html', require('ejs').renderFile)
-app.set('views', path.join(__dirname, 'views'))
-app.set('view engine', 'html')
-
-// uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(cookieSession({
@@ -108,7 +104,7 @@ function renderPage(appHtml) {
     <div id=react-render>${appHtml}</div>
     <script src="/javascripts/jquery-3.0.0.js"></script>
     <script src="/javascripts/materialize.js"></script>
-    <script src="/javascripts/main.jsx"></script>
+    <script src="/javascripts/main.js"></script>
    `
 }
 
