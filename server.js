@@ -48,7 +48,7 @@ app.get('/patientinfo', (req,res) => {
 })
 
 app.post('/upload', (req, res) => {
-  console.log("Hello");
+  res.send("Done");
   let data = {
     username: req.body.username,
     filename: req.body.filename,
@@ -56,6 +56,9 @@ app.post('/upload', (req, res) => {
   }
   DBSchema.File.create(data), (err, results) => {
   }
+})
+
+app.post('/results', (req, res) => {
   DBSchema.File.find({username: req.body.username}, (err, results) => {
     res.json(results)
   })

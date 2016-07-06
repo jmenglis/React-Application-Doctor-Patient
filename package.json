@@ -26,7 +26,6 @@
     "react": "^15.2.0",
     "react-document-title": "^2.0.2",
     "react-dom": "^15.2.0",
-    "react-dropzone": "^3.5.2",
     "react-router": "^2.5.2",
     "serve-favicon": "~2.3.0"
   },

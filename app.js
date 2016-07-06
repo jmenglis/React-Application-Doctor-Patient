@@ -130,13 +130,16 @@
 	});
 
 	app.post('/upload', function (req, res) {
-	  console.log("Hello");
+	  res.send("Done");
 	  var data = {
 	    username: req.body.username,
 	    filename: req.body.filename,
 	    file: req.body.payload
 	  };
 	  _schema2.default.File.create(data), function (err, results) {};
+	});
+
+	app.post('/results', function (req, res) {
 	  _schema2.default.File.find({ username: req.body.username }, function (err, results) {
 	    res.json(results);
 	  });
@@ -666,9 +669,55 @@
 	          'div',
 	          null,
 	          _react2.default.createElement(
-	            'h1',
+	            'h2',
+	            { className: 'centerize' },
+	            'Templus Challenge Application'
+	          ),
+	          _react2.default.createElement(
+	            'p',
 	            null,
-	            'Hello World'
+	            'In order to login to this application please use the following credentials:'
+	          ),
+	          _react2.default.createElement(
+	            'ul',
+	            { className: 'listStyleCirc' },
+	            _react2.default.createElement(
+	              'li',
+	              null,
+	              _react2.default.createElement(
+	                'strong',
+	                null,
+	                'Username:'
+	              ),
+	              ' TempusDoc | ',
+	              _react2.default.createElement(
+	                'strong',
+	                null,
+	                'Password:'
+	              ),
+	              ' Tempus1234'
+	            ),
+	            _react2.default.createElement(
+	              'li',
+	              null,
+	              _react2.default.createElement(
+	                'strong',
+	                null,
+	                'Username:'
+	              ),
+	              ' TempusPat | ',
+	              _react2.default.createElement(
+	                'strong',
+	                null,
+	                'Password:'
+	              ),
+	              ' Tempus1234'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            'Once logged in you will be directed to the appropriate page based on login information'
 	          )
 	        )
 	      );
@@ -1068,19 +1117,47 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var PatientForm = function (_Component) {
-	  _inherits(PatientForm, _Component);
+	var ListFiles = function (_Component) {
+	  _inherits(ListFiles, _Component);
 
-	  function PatientForm() {
+	  function ListFiles() {
+	    _classCallCheck(this, ListFiles);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(ListFiles).apply(this, arguments));
+	  }
+
+	  _createClass(ListFiles, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'li',
+	        null,
+	        this.props.file
+	      );
+	    }
+	  }]);
+
+	  return ListFiles;
+	}(_react.Component);
+
+	var PatientForm = function (_Component2) {
+	  _inherits(PatientForm, _Component2);
+
+	  function PatientForm(props) {
 	    _classCallCheck(this, PatientForm);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(PatientForm).apply(this, arguments));
+	    var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(PatientForm).call(this, props));
+
+	    _this2.state = {
+	      filename: []
+	    };
+	    return _this2;
 	  }
 
 	  _createClass(PatientForm, [{
 	    key: 'handleSubmit',
 	    value: function handleSubmit(e) {
-	      var _this2 = this;
+	      var _this3 = this;
 
 	      e.preventDefault();
 	      var files = document.querySelector('input[type=file]').files;
@@ -1095,7 +1172,7 @@
 	        });
 	        p1.then(function (result) {
 	          var combinedData = {
-	            username: _this2.props.username,
+	            username: _this3.props.username,
 	            filename: file.name,
 	            payload: result
 	          };
@@ -1104,7 +1181,7 @@
 	            data: combinedData,
 	            type: 'POST',
 	            success: function success(upload) {
-	              console.log(upload);
+	              _this3.componentDidUpdate();
 	            }
 	          });
 	        });
@@ -1115,37 +1192,78 @@
 	      }
 	    }
 	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate() {
+	      var _this4 = this;
+
+	      $.ajax({
+	        url: '/results',
+	        type: 'POST',
+	        data: { username: this.props.username },
+	        success: function success(dbData) {
+	          dbData.forEach(function (result, index) {
+	            for (var key in result) {
+	              var indexOf = _this4.state.filename.indexOf(result['filename']);
+	              if (indexOf === -1) {
+	                _this4.setState({
+	                  filename: _this4.state.filename.concat(result['filename'])
+	                });
+	              }
+	            }
+	          });
+	        }
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
-	        'form',
-	        { onSubmit: this.handleSubmit.bind(this) },
+	        'div',
+	        null,
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'file-field input-field' },
+	          null,
+	          'Here are the files that are currently stored in the system:'
+	        ),
+	        _react2.default.createElement(
+	          'ul',
+	          null,
+	          this.state.filename.map(function (file, i) {
+	            return _react2.default.createElement(ListFiles, { key: i, file: file });
+	          })
+	        ),
+	        _react2.default.createElement('br', null),
+	        _react2.default.createElement('br', null),
+	        _react2.default.createElement(
+	          'form',
+	          { onSubmit: this.handleSubmit.bind(this) },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'btn' },
+	            { className: 'file-field input-field' },
 	            _react2.default.createElement(
-	              'span',
-	              null,
-	              'File'
+	              'div',
+	              { className: 'btn' },
+	              _react2.default.createElement(
+	                'span',
+	                null,
+	                'File'
+	              ),
+	              _react2.default.createElement('input', { type: 'file', multiple: true })
 	            ),
-	            _react2.default.createElement('input', { type: 'file', multiple: true })
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'file-path-wrapper' },
+	              _react2.default.createElement('input', { ref: 'valueBox', className: 'file-path validate', type: 'text', placeholder: 'Upload one or more files' })
+	            )
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'file-path-wrapper' },
-	            _react2.default.createElement('input', { className: 'file-path validate', type: 'text', placeholder: 'Upload one or more files' })
-	          )
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'row centerize' },
-	          _react2.default.createElement(
-	            'button',
-	            { className: 'btn waves-effect waves-light', type: 'submit', name: 'action' },
-	            'Submit'
+	            { className: 'row centerize' },
+	            _react2.default.createElement(
+	              'button',
+	              { className: 'btn waves-effect waves-light', type: 'submit', name: 'action' },
+	              'Submit'
+	            )
 	          )
 	        )
 	      );
@@ -1155,30 +1273,30 @@
 	  return PatientForm;
 	}(_react.Component);
 
-	var Patient = function (_Component2) {
-	  _inherits(Patient, _Component2);
+	var Patient = function (_Component3) {
+	  _inherits(Patient, _Component3);
 
 	  function Patient(props) {
 	    _classCallCheck(this, Patient);
 
-	    var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(Patient).call(this, props));
+	    var _this5 = _possibleConstructorReturn(this, Object.getPrototypeOf(Patient).call(this, props));
 
-	    _this3.state = {
+	    _this5.state = {
 	      username: null
 	    };
-	    return _this3;
+	    return _this5;
 	  }
 
 	  _createClass(Patient, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      var _this4 = this;
+	      var _this6 = this;
 
 	      $.ajax({
 	        type: "GET",
 	        url: "/authorized",
 	        success: function success(userData) {
-	          _this4.setState({ username: userData.username });
+	          _this6.setState({ username: userData.username });
 	          if (userData.loggedIn === false) {
 	            _reactRouter.browserHistory.push('/login');
 	          } else if (userData.type === "Doctor") {

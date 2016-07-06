@@ -1,3 +1,4 @@
+@import 'https://fonts.googleapis.com/css?family=Roboto:400,400i,700';
 @import "./materialize";
 
 body {
@@ -11,4 +12,8 @@ main {
 
 .centerize {
   text-align: center;
+}
+
+.listStyleCirc {
+  list-style-type: circle;
 }

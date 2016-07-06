@@ -3,8 +3,19 @@ import ReactDOM from 'react-dom'
 import DocumentTitle from 'react-document-title'
 import { browserHistory } from 'react-router'
 
+class ListFiles extends Component {
+  render() {
+    return <li>{this.props.file}</li>
+  }
+}
 
 class PatientForm extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      filename: [],
+    }
+  }
   handleSubmit(e) {
     e.preventDefault()
     let files = document.querySelector('input[type=file]').files
@@ -28,7 +39,7 @@ class PatientForm extends Component {
           data: combinedData,
           type: 'POST',
           success: (upload) => {
-            console.log(upload);
+            this.componentDidUpdate()
           }
         })
       })
@@ -38,8 +49,38 @@ class PatientForm extends Component {
       [].forEach.call(files, readURL)
     }
   }
+  componentDidUpdate() {
+    $.ajax({
+      url: '/results',
+      type: 'POST',
+      data: {username: this.props.username},
+      success: (dbData) => {
+        dbData.forEach((result, index) => {
+          for (let key in result) {
+            let indexOf = this.state.filename.indexOf(result['filename'])
+            if (indexOf === -1) {
+              this.setState({
+                filename: this.state.filename.concat(result['filename'])
+              })
+            }
+          }
+        });
+      }
+    })
+  }
   render() {
     return (
+      <div>
+        <div>Here are the files that are currently stored in the system:</div>
+        <ul>
+        {this.state.filename.map((file, i) => {
+          return (
+            <ListFiles key={i} file={file} />
+          )
+        })}
+        </ul>
+        <br />
+        <br />
         <form onSubmit={this.handleSubmit.bind(this)}>
           <div className="file-field input-field">
             <div className="btn">
@@ -47,13 +88,14 @@ class PatientForm extends Component {
               <input type="file" multiple />
             </div>
             <div className="file-path-wrapper">
-              <input className="file-path validate" type="text" placeholder="Upload one or more files" />
+              <input ref="valueBox" className="file-path validate" type="text" placeholder="Upload one or more files" />
             </div>
           </div>
           <div className="row centerize">
               <button className="btn waves-effect waves-light" type="submit" name="action">Submit</button>
           </div>
         </form>
+      </div>
     )
   }
 }
