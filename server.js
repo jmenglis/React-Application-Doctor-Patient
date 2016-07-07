@@ -1,7 +1,7 @@
 require('dotenv').config();
 import express from 'express'
 import path from 'path'
-import favicon from 'serve-favicon'
+// import favicon from 'serve-favicon'
 import logger from 'morgan'
 import bodyParser from 'body-parser'
 import cookieSession from 'cookie-session'
@@ -129,6 +129,7 @@ function renderPage(appHtml) {
     <html>
     <meta charset=utf-8/>
     <title>Tempus - Home</title>
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="/stylesheets/style.css" />
     <div id=react-render>${appHtml}</div>
     <script src="/javascripts/jquery-3.0.0.js"></script>

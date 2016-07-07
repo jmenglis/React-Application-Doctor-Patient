@@ -8,13 +8,29 @@ export default class Home extends Component {
     return (
       <DocumentTitle title="Tempus - Home">
         <div>
-          <h2 className="centerize">Templus Challenge Application</h2>
+          <h2 className="center-align">Templus Challenge Application</h2>
           <p>In order to login to this application please use the following credentials:</p>
-          <ul className="listStyleCirc">
-            <li><strong>Username:</strong> TempusDoc | <strong>Password:</strong> Tempus1234</li>
-            <li><strong>Username:</strong> TempusPat | <strong>Password:</strong> Tempus1234</li>
-          </ul>
-          <p>Once logged in you will be directed to the appropriate page based on login information</p>
+          <table>
+            <thead>
+              <tr>
+                <th data-field="id">Username</th>
+                <th data-field="password">Password</th>
+                <th data-field="type">Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>TempusDoc</td>
+                <td>Tempus1234</td>
+                <td>Doctor</td>
+              </tr>
+              <tr>
+                <td>TempusPat</td>
+                <td>Tempus1234</td>
+                <td>Patient</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </DocumentTitle>
     )

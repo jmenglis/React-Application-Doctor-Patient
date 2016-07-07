@@ -54,48 +54,44 @@
 
 	var _path2 = _interopRequireDefault(_path);
 
-	var _serveFavicon = __webpack_require__(3);
-
-	var _serveFavicon2 = _interopRequireDefault(_serveFavicon);
-
-	var _morgan = __webpack_require__(4);
+	var _morgan = __webpack_require__(3);
 
 	var _morgan2 = _interopRequireDefault(_morgan);
 
-	var _bodyParser = __webpack_require__(5);
+	var _bodyParser = __webpack_require__(4);
 
 	var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
-	var _cookieSession = __webpack_require__(6);
+	var _cookieSession = __webpack_require__(5);
 
 	var _cookieSession2 = _interopRequireDefault(_cookieSession);
 
-	var _react = __webpack_require__(7);
+	var _react = __webpack_require__(6);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _server = __webpack_require__(8);
+	var _server = __webpack_require__(7);
 
-	var _reactRouter = __webpack_require__(9);
+	var _reactRouter = __webpack_require__(8);
 
-	var _compression = __webpack_require__(10);
+	var _compression = __webpack_require__(9);
 
 	var _compression2 = _interopRequireDefault(_compression);
 
-	var _routes = __webpack_require__(11);
+	var _routes = __webpack_require__(10);
 
 	var _routes2 = _interopRequireDefault(_routes);
 
-	var _schema = __webpack_require__(20);
+	var _schema = __webpack_require__(19);
 
 	var _schema2 = _interopRequireDefault(_schema);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(22).config();
+	__webpack_require__(21).config();
+	// import favicon from 'serve-favicon'
 
-
-	__webpack_require__(23);
+	__webpack_require__(22);
 
 	var app = (0, _express2.default)();
 	app.use((0, _compression2.default)());
@@ -109,7 +105,7 @@
 	}));
 	app.use(_bodyParser2.default.json({ limit: '50mb' }));
 	app.use(_bodyParser2.default.urlencoded({ limit: '50mb', extended: false }));
-	app.use(__webpack_require__(24)({
+	app.use(__webpack_require__(23)({
 	  src: _path2.default.join(__dirname, 'public'),
 	  dest: _path2.default.join(__dirname, 'public'),
 	  sourceMap: true
@@ -205,7 +201,7 @@
 	});
 
 	function renderPage(appHtml) {
-	  return '\n    <!doctype html public="storage">\n    <html>\n    <meta charset=utf-8/>\n    <title>Tempus - Home</title>\n    <link rel="stylesheet" href="/stylesheets/style.css" />\n    <div id=react-render>' + appHtml + '</div>\n    <script src="/javascripts/jquery-3.0.0.js"></script>\n    <script src="/javascripts/materialize.js"></script>\n    <script src="/javascripts/main.js"></script>\n   ';
+	  return '\n    <!doctype html public="storage">\n    <html>\n    <meta charset=utf-8/>\n    <title>Tempus - Home</title>\n    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">\n    <link rel="stylesheet" href="/stylesheets/style.css" />\n    <div id=react-render>' + appHtml + '</div>\n    <script src="/javascripts/jquery-3.0.0.js"></script>\n    <script src="/javascripts/materialize.js"></script>\n    <script src="/javascripts/main.js"></script>\n   ';
 	}
 
 	var PORT = process.env.PORT || 3000;
@@ -231,79 +227,73 @@
 /* 3 */
 /***/ function(module, exports) {
 
-	module.exports = require("serve-favicon");
+	module.exports = require("morgan");
 
 /***/ },
 /* 4 */
 /***/ function(module, exports) {
 
-	module.exports = require("morgan");
+	module.exports = require("body-parser");
 
 /***/ },
 /* 5 */
 /***/ function(module, exports) {
 
-	module.exports = require("body-parser");
+	module.exports = require("cookie-session");
 
 /***/ },
 /* 6 */
 /***/ function(module, exports) {
 
-	module.exports = require("cookie-session");
+	module.exports = require("react");
 
 /***/ },
 /* 7 */
 /***/ function(module, exports) {
 
-	module.exports = require("react");
+	module.exports = require("react-dom/server");
 
 /***/ },
 /* 8 */
 /***/ function(module, exports) {
 
-	module.exports = require("react-dom/server");
+	module.exports = require("react-router");
 
 /***/ },
 /* 9 */
 /***/ function(module, exports) {
 
-	module.exports = require("react-router");
-
-/***/ },
-/* 10 */
-/***/ function(module, exports) {
-
 	module.exports = require("compression");
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _react = __webpack_require__(7);
+	var _react = __webpack_require__(6);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRouter = __webpack_require__(9);
+	var _reactRouter = __webpack_require__(8);
 
-	var _App = __webpack_require__(12);
+	var _App = __webpack_require__(11);
 
 	var _App2 = _interopRequireDefault(_App);
 
-	var _Home = __webpack_require__(16);
+	var _Home = __webpack_require__(15);
 
 	var _Home2 = _interopRequireDefault(_Home);
 
-	var _Login = __webpack_require__(17);
+	var _Login = __webpack_require__(16);
 
 	var _Login2 = _interopRequireDefault(_Login);
 
-	var _Doctor = __webpack_require__(18);
+	var _Doctor = __webpack_require__(17);
 
 	var _Doctor2 = _interopRequireDefault(_Doctor);
 
-	var _Patient = __webpack_require__(19);
+	var _Patient = __webpack_require__(18);
 
 	var _Patient2 = _interopRequireDefault(_Patient);
 
@@ -319,7 +309,7 @@
 	);
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -330,21 +320,21 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _react = __webpack_require__(7);
+	var _react = __webpack_require__(6);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(13);
+	var _reactDom = __webpack_require__(12);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _reactRouter = __webpack_require__(9);
+	var _reactRouter = __webpack_require__(8);
 
-	var _reactDocumentTitle = __webpack_require__(14);
+	var _reactDocumentTitle = __webpack_require__(13);
 
 	var _reactDocumentTitle2 = _interopRequireDefault(_reactDocumentTitle);
 
-	var _NavLink = __webpack_require__(15);
+	var _NavLink = __webpack_require__(14);
 
 	var _NavLink2 = _interopRequireDefault(_NavLink);
 
@@ -530,8 +520,22 @@
 	                  'Tempus'
 	                ),
 	                _react2.default.createElement(
+	                  'a',
+	                  { href: '#', 'data-activates': 'mobile-demo', className: 'button-collapse' },
+	                  _react2.default.createElement(
+	                    'i',
+	                    { className: 'material-icons' },
+	                    'menu'
+	                  )
+	                ),
+	                _react2.default.createElement(
 	                  'ul',
-	                  { id: 'nav-mobile', className: 'right hide-on-med-and-down' },
+	                  { className: 'right hide-on-med-and-down' },
+	                  loggedButton
+	                ),
+	                _react2.default.createElement(
+	                  'ul',
+	                  { className: 'side-nav', id: 'mobile-demo' },
 	                  loggedButton
 	                )
 	              )
@@ -558,19 +562,19 @@
 	exports.default = App;
 
 /***/ },
-/* 13 */
+/* 12 */
 /***/ function(module, exports) {
 
 	module.exports = require("react-dom");
 
 /***/ },
-/* 14 */
+/* 13 */
 /***/ function(module, exports) {
 
 	module.exports = require("react-document-title");
 
 /***/ },
-/* 15 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -583,11 +587,11 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _react = __webpack_require__(7);
+	var _react = __webpack_require__(6);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRouter = __webpack_require__(9);
+	var _reactRouter = __webpack_require__(8);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -619,7 +623,7 @@
 	exports.default = NavLink;
 
 /***/ },
-/* 16 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -630,15 +634,15 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _react = __webpack_require__(7);
+	var _react = __webpack_require__(6);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(13);
+	var _reactDom = __webpack_require__(12);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _reactDocumentTitle = __webpack_require__(14);
+	var _reactDocumentTitle = __webpack_require__(13);
 
 	var _reactDocumentTitle2 = _interopRequireDefault(_reactDocumentTitle);
 
@@ -670,7 +674,7 @@
 	          null,
 	          _react2.default.createElement(
 	            'h2',
-	            { className: 'centerize' },
+	            { className: 'center-align' },
 	            'Templus Challenge Application'
 	          ),
 	          _react2.default.createElement(
@@ -679,45 +683,73 @@
 	            'In order to login to this application please use the following credentials:'
 	          ),
 	          _react2.default.createElement(
-	            'ul',
-	            { className: 'listStyleCirc' },
+	            'table',
+	            null,
 	            _react2.default.createElement(
-	              'li',
+	              'thead',
 	              null,
 	              _react2.default.createElement(
-	                'strong',
+	                'tr',
 	                null,
-	                'Username:'
-	              ),
-	              ' TempusDoc | ',
-	              _react2.default.createElement(
-	                'strong',
-	                null,
-	                'Password:'
-	              ),
-	              ' Tempus1234'
+	                _react2.default.createElement(
+	                  'th',
+	                  { 'data-field': 'id' },
+	                  'Username'
+	                ),
+	                _react2.default.createElement(
+	                  'th',
+	                  { 'data-field': 'password' },
+	                  'Password'
+	                ),
+	                _react2.default.createElement(
+	                  'th',
+	                  { 'data-field': 'type' },
+	                  'Type'
+	                )
+	              )
 	            ),
 	            _react2.default.createElement(
-	              'li',
+	              'tbody',
 	              null,
 	              _react2.default.createElement(
-	                'strong',
+	                'tr',
 	                null,
-	                'Username:'
+	                _react2.default.createElement(
+	                  'td',
+	                  null,
+	                  'TempusDoc'
+	                ),
+	                _react2.default.createElement(
+	                  'td',
+	                  null,
+	                  'Tempus1234'
+	                ),
+	                _react2.default.createElement(
+	                  'td',
+	                  null,
+	                  'Doctor'
+	                )
 	              ),
-	              ' TempusPat | ',
 	              _react2.default.createElement(
-	                'strong',
+	                'tr',
 	                null,
-	                'Password:'
-	              ),
-	              ' Tempus1234'
+	                _react2.default.createElement(
+	                  'td',
+	                  null,
+	                  'TempusPat'
+	                ),
+	                _react2.default.createElement(
+	                  'td',
+	                  null,
+	                  'Tempus1234'
+	                ),
+	                _react2.default.createElement(
+	                  'td',
+	                  null,
+	                  'Patient'
+	                )
+	              )
 	            )
-	          ),
-	          _react2.default.createElement(
-	            'p',
-	            null,
-	            'Once logged in you will be directed to the appropriate page based on login information'
 	          )
 	        )
 	      );
@@ -730,7 +762,7 @@
 	exports.default = Home;
 
 /***/ },
-/* 17 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -741,19 +773,19 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _react = __webpack_require__(7);
+	var _react = __webpack_require__(6);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(13);
+	var _reactDom = __webpack_require__(12);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _reactDocumentTitle = __webpack_require__(14);
+	var _reactDocumentTitle = __webpack_require__(13);
 
 	var _reactDocumentTitle2 = _interopRequireDefault(_reactDocumentTitle);
 
-	var _reactRouter = __webpack_require__(9);
+	var _reactRouter = __webpack_require__(8);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -777,8 +809,12 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        null,
-	        'Your password or username is incorrect'
+	        { className: 'card-panel' },
+	        _react2.default.createElement(
+	          'span',
+	          { className: 'red-text' },
+	          'Your password or username is incorrect'
+	        )
 	      );
 	    }
 	  }]);
@@ -860,8 +896,8 @@
 	          'div',
 	          { className: 'row' },
 	          _react2.default.createElement(
-	            'h1',
-	            null,
+	            'h2',
+	            { className: 'center-align' },
 	            'Please Login'
 	          ),
 	          failureMessage,
@@ -894,7 +930,7 @@
 	            ),
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'row' },
+	              { className: 'row center-align' },
 	              _react2.default.createElement(
 	                'button',
 	                { className: 'btn waves-effect waves-light', type: 'submit', name: 'action' },
@@ -913,7 +949,7 @@
 	exports.default = Login;
 
 /***/ },
-/* 18 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -924,19 +960,19 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _react = __webpack_require__(7);
+	var _react = __webpack_require__(6);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(13);
+	var _reactDom = __webpack_require__(12);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _reactDocumentTitle = __webpack_require__(14);
+	var _reactDocumentTitle = __webpack_require__(13);
 
 	var _reactDocumentTitle2 = _interopRequireDefault(_reactDocumentTitle);
 
-	var _reactRouter = __webpack_require__(9);
+	var _reactRouter = __webpack_require__(8);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1068,9 +1104,14 @@
 	          null,
 	          _react2.default.createElement(
 	            'h2',
-	            null,
+	            { className: 'center-align' },
 	            'Welcome Back ',
 	            this.state.username
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            'Here is some random patient info:'
 	          ),
 	          _react2.default.createElement(PatientInfo, null)
 	        )
@@ -1084,7 +1125,7 @@
 	exports.default = Doctor;
 
 /***/ },
-/* 19 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1095,19 +1136,19 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _react = __webpack_require__(7);
+	var _react = __webpack_require__(6);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(13);
+	var _reactDom = __webpack_require__(12);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _reactDocumentTitle = __webpack_require__(14);
+	var _reactDocumentTitle = __webpack_require__(13);
 
 	var _reactDocumentTitle2 = _interopRequireDefault(_reactDocumentTitle);
 
-	var _reactRouter = __webpack_require__(9);
+	var _reactRouter = __webpack_require__(8);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1256,9 +1297,10 @@
 	              _react2.default.createElement('input', { ref: 'valueBox', className: 'file-path validate', type: 'text', placeholder: 'Upload one or more files' })
 	            )
 	          ),
+	          _react2.default.createElement('br', null),
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'row centerize' },
+	            { className: 'row center-align' },
 	            _react2.default.createElement(
 	              'button',
 	              { className: 'btn waves-effect waves-light', type: 'submit', name: 'action' },
@@ -1316,7 +1358,7 @@
 	          null,
 	          _react2.default.createElement(
 	            'h2',
-	            null,
+	            { className: 'center-align' },
 	            'Welcome ',
 	            this.state.username
 	          ),
@@ -1332,12 +1374,12 @@
 	exports.default = Patient;
 
 /***/ },
-/* 20 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var mongoose = __webpack_require__(21);
+	var mongoose = __webpack_require__(20);
 
 	// userSchema
 
@@ -1372,24 +1414,24 @@
 	};
 
 /***/ },
-/* 21 */
+/* 20 */
 /***/ function(module, exports) {
 
 	module.exports = require("mongoose");
 
 /***/ },
-/* 22 */
+/* 21 */
 /***/ function(module, exports) {
 
 	module.exports = require("dotenv");
 
 /***/ },
-/* 23 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var mongoose = __webpack_require__(21);
+	var mongoose = __webpack_require__(20);
 
 	// connect us to the database.
 
@@ -1410,7 +1452,7 @@
 	});
 
 /***/ },
-/* 24 */
+/* 23 */
 /***/ function(module, exports) {
 
 	module.exports = require("node-sass-middleware");

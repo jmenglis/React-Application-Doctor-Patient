@@ -91,7 +91,8 @@ class PatientForm extends Component {
               <input ref="valueBox" className="file-path validate" type="text" placeholder="Upload one or more files" />
             </div>
           </div>
-          <div className="row centerize">
+          <br />
+          <div className="row center-align">
               <button className="btn waves-effect waves-light" type="submit" name="action">Submit</button>
           </div>
         </form>
@@ -125,7 +126,7 @@ export default class Patient extends Component {
     return (
       <DocumentTitle title="Tempus - Patient">
         <div>
-          <h2>Welcome {this.state.username}</h2>
+          <h2 className="center-align">Welcome {this.state.username}</h2>
           <PatientForm username={this.state.username} />
         </div>
       </DocumentTitle>

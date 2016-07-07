@@ -62,7 +62,8 @@ export default class Doctor extends Component {
     return (
       <DocumentTitle title="Tempus - Doctor">
         <div>
-          <h2>Welcome Back {this.state.username}</h2>
+          <h2 className="center-align">Welcome Back {this.state.username}</h2>
+          <p>Here is some random patient info:</p>
           <PatientInfo />
         </div>
       </DocumentTitle>

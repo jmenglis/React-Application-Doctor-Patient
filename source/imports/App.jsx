@@ -85,7 +85,11 @@ export default class App extends Component {
             <nav>
               <div className="nav-wrapper">
                 <Link to="/" className="brand-logo">Tempus</Link>
-                <ul id="nav-mobile" className="right hide-on-med-and-down">
+                <a href="#" data-activates="mobile-demo" className="button-collapse"><i className="material-icons">menu</i></a>
+                <ul className="right hide-on-med-and-down">
+                  {loggedButton}
+                </ul>
+                <ul className="side-nav" id="mobile-demo">
                   {loggedButton}
                 </ul>
               </div>
@@ -97,14 +101,6 @@ export default class App extends Component {
               {React.cloneElement(this.props.children, {logUserIn: this.logUserIn}) || <Home />}
             </div>
           </main>
-          {/* <footer className="page-footer">
-            <div className="footer-copyright">
-              <div className="container">
-              © 2016 Josh English
-              </div>
-            </div>
-          </footer>
-          */}
         </div>
       </DocumentTitle>
     );

@@ -6,7 +6,9 @@ import { browserHistory } from 'react-router'
 class Message extends Component {
   render() {
     return (
-      <div>Your password or username is incorrect</div>
+      <div className="card-panel">
+        <span className="red-text">Your password or username is incorrect</span>
+      </div>
     )
   }
 }
@@ -66,7 +68,7 @@ export default class Login extends Component {
     return (
       <DocumentTitle title="Tempus - Login">
         <div className="row">
-          <h1>Please Login</h1>
+          <h2 className="center-align">Please Login</h2>
           {failureMessage}
           <form className="col s12" onSubmit={this.handleSubmit.bind(this)}>
             <div className="row">
@@ -79,7 +81,7 @@ export default class Login extends Component {
                 <label htmlFor="password">Password</label>
               </div>
             </div>
-            <div className="row">
+            <div className="row center-align">
               <button className="btn waves-effect waves-light" type="submit" name="action">Submit</button>
             </div>
           </form>
