@@ -48,14 +48,15 @@ app.get('/patientinfo', (req,res) => {
 })
 
 app.post('/upload', (req, res) => {
-  res.send("Done");
   let data = {
     username: req.body.username,
     filename: req.body.filename,
     file: req.body.payload,
   }
-  DBSchema.File.create(data), (err, results) => {
-  }
+  let update = new DBSchema.File(data)
+  update.save((err, result) => {
+    res.json(result)
+  })
 })
 
 app.post('/results', (req, res) => {

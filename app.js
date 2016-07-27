@@ -126,13 +126,15 @@
 	});
 
 	app.post('/upload', function (req, res) {
-	  res.send("Done");
 	  var data = {
 	    username: req.body.username,
 	    filename: req.body.filename,
 	    file: req.body.payload
 	  };
-	  _schema2.default.File.create(data), function (err, results) {};
+	  var update = new _schema2.default.File(data);
+	  update.save(function (err, result) {
+	    res.json(result);
+	  });
 	});
 
 	app.post('/results', function (req, res) {
@@ -201,7 +203,7 @@
 	});
 
 	function renderPage(appHtml) {
-	  return '\n    <!doctype html public="storage">\n    <html>\n    <meta charset=utf-8/>\n    <title>Tempus - Home</title>\n    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">\n    <link rel="stylesheet" href="/stylesheets/style.css" />\n    <div id=react-render>' + appHtml + '</div>\n    <script src="/javascripts/jquery-3.0.0.js"></script>\n    <script src="/javascripts/materialize.js"></script>\n    <script src="/javascripts/main.js"></script>\n   ';
+	  return '\n    <!doctype html public="storage">\n    <html>\n    <meta charset=utf-8/>\n    <title>Application - Home</title>\n    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">\n    <link rel="stylesheet" href="/stylesheets/style.css" />\n    <div id=react-render>' + appHtml + '</div>\n    <script src="/javascripts/jquery-3.0.0.js"></script>\n    <script src="/javascripts/materialize.js"></script>\n    <script src="/javascripts/main.js"></script>\n   ';
 	}
 
 	var PORT = process.env.PORT || 3000;
@@ -501,7 +503,7 @@
 	      var loggedButton = this.state.logoutButton ? _react2.default.createElement(LoggedOut, { type: this.state.type, logUser: this.logUserOut }) : _react2.default.createElement(LoggedIn, null);
 	      return _react2.default.createElement(
 	        _reactDocumentTitle2.default,
-	        { title: 'Tempus - Home' },
+	        { title: 'Application - Home' },
 	        _react2.default.createElement(
 	          'div',
 	          null,
@@ -517,7 +519,7 @@
 	                _react2.default.createElement(
 	                  _reactRouter.Link,
 	                  { to: '/', className: 'brand-logo' },
-	                  'Tempus'
+	                  'Application'
 	                ),
 	                _react2.default.createElement(
 	                  'a',
@@ -668,14 +670,14 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        _reactDocumentTitle2.default,
-	        { title: 'Tempus - Home' },
+	        { title: 'Application - Home' },
 	        _react2.default.createElement(
 	          'div',
 	          null,
 	          _react2.default.createElement(
 	            'h2',
 	            { className: 'center-align' },
-	            'Templus Challenge Application'
+	            'Application'
 	          ),
 	          _react2.default.createElement(
 	            'p',
@@ -891,7 +893,7 @@
 	      var failureMessage = this.state.failedLogin ? _react2.default.createElement(Message, null) : '';
 	      return _react2.default.createElement(
 	        _reactDocumentTitle2.default,
-	        { title: 'Tempus - Login' },
+	        { title: 'Application - Login' },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'row' },
@@ -1098,7 +1100,7 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        _reactDocumentTitle2.default,
-	        { title: 'Tempus - Doctor' },
+	        { title: 'Application - Doctor' },
 	        _react2.default.createElement(
 	          'div',
 	          null,
@@ -1190,7 +1192,8 @@
 	    var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(PatientForm).call(this, props));
 
 	    _this2.state = {
-	      filename: []
+	      filename: [],
+	      uploaded: false
 	    };
 	    return _this2;
 	  }
@@ -1200,6 +1203,7 @@
 	    value: function handleSubmit(e) {
 	      var _this3 = this;
 
+	      this.setState({ uploaded: false });
 	      e.preventDefault();
 	      var files = document.querySelector('input[type=file]').files;
 	      var readURL = function readURL(file) {
@@ -1222,7 +1226,8 @@
 	            data: combinedData,
 	            type: 'POST',
 	            success: function success(upload) {
-	              _this3.componentDidUpdate();
+	              console.log(upload);
+	              _this3.setState({ uploaded: true });
 	            }
 	          });
 	        });
@@ -1231,6 +1236,7 @@
 	      if (files) {
 	        [].forEach.call(files, readURL);
 	      }
+	      _reactDom2.default.findDOMNode(this.refs.valueBox).value = '';
 	    }
 	  }, {
 	    key: 'componentDidUpdate',
@@ -1352,7 +1358,7 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        _reactDocumentTitle2.default,
-	        { title: 'Tempus - Patient' },
+	        { title: 'Application - Patient' },
 	        _react2.default.createElement(
 	          'div',
 	          null,

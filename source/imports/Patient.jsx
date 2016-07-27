@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import DocumentTitle from 'react-document-title'
 import { browserHistory } from 'react-router'
 
+
 class ListFiles extends Component {
   render() {
     return <li>{this.props.file}</li>
@@ -14,9 +15,11 @@ class PatientForm extends Component {
     super(props)
     this.state = {
       filename: [],
+      uploaded: false,
     }
   }
   handleSubmit(e) {
+    this.setState({uploaded: false})
     e.preventDefault()
     let files = document.querySelector('input[type=file]').files
     var readURL = (file) => {
@@ -39,7 +42,8 @@ class PatientForm extends Component {
           data: combinedData,
           type: 'POST',
           success: (upload) => {
-            this.componentDidUpdate()
+            console.log(upload)
+            this.setState({uploaded: true})
           }
         })
       })
@@ -48,6 +52,7 @@ class PatientForm extends Component {
     if (files) {
       [].forEach.call(files, readURL)
     }
+    ReactDOM.findDOMNode(this.refs.valueBox).value = ''
   }
   componentDidUpdate() {
     $.ajax({
