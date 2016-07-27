@@ -20,13 +20,13 @@ export default class Home extends Component {
             </thead>
             <tbody>
               <tr>
-                <td>TempusDoc</td>
-                <td>Tempus1234</td>
+                <td>Doc</td>
+                <td>1234</td>
                 <td>Doctor</td>
               </tr>
               <tr>
-                <td>TempusPat</td>
-                <td>Tempus1234</td>
+                <td>Pat</td>
+                <td>1234</td>
                 <td>Patient</td>
               </tr>
             </tbody>
