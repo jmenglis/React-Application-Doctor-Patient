@@ -677,7 +677,7 @@
 	          _react2.default.createElement(
 	            'h2',
 	            { className: 'center-align' },
-	            'Application'
+	            'Doctor and Patient Application'
 	          ),
 	          _react2.default.createElement(
 	            'p',
@@ -719,12 +719,12 @@
 	                _react2.default.createElement(
 	                  'td',
 	                  null,
-	                  'TempusDoc'
+	                  'Doc'
 	                ),
 	                _react2.default.createElement(
 	                  'td',
 	                  null,
-	                  'Tempus1234'
+	                  '1234'
 	                ),
 	                _react2.default.createElement(
 	                  'td',
@@ -738,12 +738,12 @@
 	                _react2.default.createElement(
 	                  'td',
 	                  null,
-	                  'TempusPat'
+	                  'Pat'
 	                ),
 	                _react2.default.createElement(
 	                  'td',
 	                  null,
-	                  'Tempus1234'
+	                  '1234'
 	                ),
 	                _react2.default.createElement(
 	                  'td',
