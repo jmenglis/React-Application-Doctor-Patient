@@ -79,12 +79,12 @@ export default class App extends Component {
   render() {
     let loggedButton = this.state.logoutButton ? <LoggedOut type={this.state.type} logUser={this.logUserOut} /> : <LoggedIn />
     return (
-      <DocumentTitle title="Tempus - Home">
+      <DocumentTitle title="Application - Home">
         <div>
           <header>
             <nav>
               <div className="nav-wrapper">
-                <Link to="/" className="brand-logo">Tempus</Link>
+                <Link to="/" className="brand-logo">Application</Link>
                 <a href="#" data-activates="mobile-demo" className="button-collapse"><i className="material-icons">menu</i></a>
                 <ul className="right hide-on-med-and-down">
                   {loggedButton}

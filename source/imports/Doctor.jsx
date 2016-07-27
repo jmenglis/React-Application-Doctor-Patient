@@ -60,7 +60,7 @@ export default class Doctor extends Component {
   }
   render() {
     return (
-      <DocumentTitle title="Tempus - Doctor">
+      <DocumentTitle title="Application - Doctor">
         <div>
           <h2 className="center-align">Welcome Back {this.state.username}</h2>
           <p>Here is some random patient info:</p>

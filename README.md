@@ -1,8 +1,8 @@
-# Tempus Coding Challenge
+# Development
 
 ## Summary
 
-This application was created as part of the Tempus coding challenge.  The requirements for this application were:
+The requirements for this application were:
 - Design an appealing web application.
 - Create a single login page for Doctors and Patients.
 - Doctors will login and the system will show details of a patient.

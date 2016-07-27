@@ -124,7 +124,7 @@ export default class Patient extends Component {
   }
   render() {
     return (
-      <DocumentTitle title="Tempus - Patient">
+      <DocumentTitle title="Application - Patient">
         <div>
           <h2 className="center-align">Welcome {this.state.username}</h2>
           <PatientForm username={this.state.username} />

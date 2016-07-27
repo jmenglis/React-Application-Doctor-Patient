@@ -66,7 +66,7 @@ export default class Login extends Component {
   render() {
     var failureMessage = this.state.failedLogin ? <Message /> : ''
     return (
-      <DocumentTitle title="Tempus - Login">
+      <DocumentTitle title="Application - Login">
         <div className="row">
           <h2 className="center-align">Please Login</h2>
           {failureMessage}

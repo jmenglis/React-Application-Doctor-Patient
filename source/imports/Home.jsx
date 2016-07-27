@@ -6,9 +6,9 @@ import DocumentTitle from 'react-document-title'
 export default class Home extends Component {
   render() {
     return (
-      <DocumentTitle title="Tempus - Home">
+      <DocumentTitle title="Application - Home">
         <div>
-          <h2 className="center-align">Templus Challenge Application</h2>
+          <h2 className="center-align">Application</h2>
           <p>In order to login to this application please use the following credentials:</p>
           <table>
             <thead>
