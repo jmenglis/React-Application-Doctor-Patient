@@ -8,7 +8,7 @@ export default class Home extends Component {
     return (
       <DocumentTitle title="Application - Home">
         <div>
-          <h2 className="center-align">Application</h2>
+          <h2 className="center-align">Doctor and Patient Application</h2>
           <p>In order to login to this application please use the following credentials:</p>
           <table>
             <thead>
