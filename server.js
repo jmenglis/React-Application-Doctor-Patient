@@ -110,7 +110,9 @@ app.get('/logout', (req, res) => {
 })
 
 app.get('*', (req, res) => {
+  console.log(req.url)
   match({ routes, location: req.url }, (err, redirect, props) => {
+    console.log(props)
     if (err) {
       res.status(500).send(err.message)
     } else if (redirect) {

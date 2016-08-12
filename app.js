@@ -188,7 +188,9 @@
 	});
 
 	app.get('*', function (req, res) {
+	  console.log(req.url);
 	  (0, _reactRouter.match)({ routes: _routes2.default, location: req.url }, function (err, redirect, props) {
+	    console.log(props);
 	    if (err) {
 	      res.status(500).send(err.message);
 	    } else if (redirect) {
